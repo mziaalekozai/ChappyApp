@@ -12,7 +12,7 @@ dist/
 dist-ssr
 *.local
 .env
-.backendDist
+.backendDist/
 
 
 # Editor directories and files
