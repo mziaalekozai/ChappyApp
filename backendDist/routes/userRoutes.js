@@ -115,8 +115,8 @@ router.delete("/:id", async (req, res) => {
     }
 });
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    const result = await loginUser(email, password);
+    const { username, password } = req.body;
+    const result = await loginUser(username, password);
     if (result.success) {
         res.status(200).json({ message: result.message, user: result.user });
     }

@@ -4,19 +4,19 @@ import bcrypt from "bcrypt";
 import { connectToDatabase } from "./userCon.js";
 
 async function loginUser(
-  email: string,
+  username: string,
   password: string
 ): Promise<LoginResult> {
   const [userCollection] = await connectToDatabase();
 
   try {
     const user = await userCollection.findOne<User>({
-      email: email,
+      username: username,
       password: password,
     });
     if (!user) {
-      return { success: false, message: "Invalid email or password" };
-      console.error("Invalid email or password");
+      return { success: false, message: "Invalid username or password" };
+      console.error("Invalid username or password");
     }
 
     const match = await bcrypt.compare(password, user.password);
