@@ -4,3 +4,8 @@ export interface User {
   password: string;
   image: string;
 }
+export interface LoginResult {
+  success: boolean;
+  message: string;
+  user?: User;
+}

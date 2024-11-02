@@ -1,0 +1,20 @@
+import { connectToDatabase } from "./userCon.js"; // Adjust this path to point to your database connection utility
+export async function deleteUser(id) {
+    const [userCollection, client] = await connectToDatabase();
+    try {
+        const result = await userCollection.deleteOne({ _id: id });
+        if (!result.acknowledged) {
+            console.error("Could not delete the user - operation not acknowledged");
+            return null;
+        }
+        console.log(`Deleted ${result.deletedCount} user(s).`);
+        return result;
+    }
+    catch (error) {
+        console.error("Error deleting user:", error);
+        throw error;
+    }
+    finally {
+        await client.close();
+    }
+}

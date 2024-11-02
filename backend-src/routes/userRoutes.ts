@@ -7,6 +7,7 @@ import { isValidUser } from "../data/validationUser.js";
 import { addUser } from "../mongoDB-src/users/addUser.js";
 import { updateUser } from "../mongoDB-src/users/updateUsers.js";
 import { deleteUser } from "../mongoDB-src/users/deleteUser.js";
+import { loginUser } from "../mongoDB-src/users/loginUser.js";
 
 export const router: Router = express.Router();
 
@@ -114,4 +115,16 @@ router.delete("/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+router.post("/login", async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const result = await loginUser(email, password);
+
+  if (result.success) {
+    res.status(200).json({ message: result.message, user: result.user });
+  } else {
+    res.status(401).json({ message: result.message });
+  }
+});
+
 export default router;
