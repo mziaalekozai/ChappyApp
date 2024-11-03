@@ -42,27 +42,58 @@ router.get("/:id", async (req, res) => {
     }
 });
 router.post("/addUser", async (req, res) => {
+    const newUser = req.body;
+    // Flytta valideringen först
+    if (!isValidUser(newUser)) {
+        res.status(400).json({ message: "Failed to create user. Invalid data." });
+    }
     try {
-        const newUser = req.body;
         const userId = await addUser(newUser);
-        if (!isValidUser(newUser)) {
-            // console.log("Invalid user data:", newUser);
-            res.status(400).json({ message: "Failed to create user. Invalid data." });
+        if (!userId) {
+            // Eftersom addUser returnerar null om användaren redan finns
+            res.status(409).json({ message: "User already exists." });
         }
-        else if (!userId) {
-            res.status(409).json({ message: "User already exists." }); // 409 Conflict
-        }
-        else {
-            res.status(201).json({ ...newUser, _id: userId });
-        }
+        res.status(201).json({ ...newUser, _id: userId });
     }
     catch (error) {
         console.error("Error adding user:", error);
+        // Se till att det här är den enda platsen där vi hanterar serverfel
         if (!res.headersSent) {
             res.status(500).json({ message: "Internal Server Error" });
         }
     }
 });
+// router.post("/addUser", async (req: Request, res: Response) => {
+//   const newUser: User = req.body;
+//   if (!isValidUser(newUser)) {
+//     res.status(400).json({ message: "Failed to create user. Invalid data." });
+//   }
+//   const userId = await addUser(newUser);
+//   if (!userId) {
+//     res.status(409).json({ message: "User already exists." }); // 409 Conflict
+//   } else {
+//     res.status(201).json({ ...newUser, _id: userId });
+//   }
+// });
+// router.post("/addUser", async (req: Request, res: Response) => {
+//   try {
+//     const newUser: User = req.body;
+//     const userId = await addUser(newUser);
+//     if (!isValidUser(newUser)) {
+//       // console.log("Invalid user data:", newUser);
+//       res.status(400).json({ message: "Failed to create user. Invalid data." });
+//     } else if (!userId) {
+//       res.status(409).json({ message: "User already exists." }); // 409 Conflict
+//     } else {
+//       res.status(201).json({ ...newUser, _id: userId });
+//     }
+//   } catch (error) {
+//     console.error("Error adding user:", error);
+//     if (!res.headersSent) {
+//       res.status(500).json({ message: "Internal Server Error" });
+//     }
+//   }
+// });
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const body = req.body;

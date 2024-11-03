@@ -30,7 +30,6 @@ router.get("/:id", async (req: Request, res: Response) => {
     const id = req.params.id;
     const mongoObjectId: ObjectId = new ObjectId(id);
     const user = await fetchUserById(mongoObjectId);
-    // if (user.length === 0) {
     if (!ObjectId.isValid(id)) {
       res.status(404).send("No users found");
     } else {
@@ -43,18 +42,17 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.post("/addUser", async (req: Request, res: Response) => {
-  try {
-    const newUser: User = req.body;
-    const userId = await addUser(newUser);
+  const newUser: User = req.body;
+  if (!isValidUser(newUser)) {
+    res.status(400).json({ message: "Failed to create user. Invalid data." });
+  }
 
-    if (!isValidUser(newUser)) {
-      // console.log("Invalid user data:", newUser);
-      res.status(400).json({ message: "Failed to create user. Invalid data." });
-    } else if (!userId) {
-      res.status(409).json({ message: "User already exists." }); // 409 Conflict
-    } else {
-      res.status(201).json({ ...newUser, _id: userId });
+  try {
+    const userId = await addUser(newUser);
+    if (!userId) {
+      res.status(409).json({ message: "User already exists." });
     }
+    res.status(201).json({ ...newUser, _id: userId });
   } catch (error) {
     console.error("Error adding user:", error);
     if (!res.headersSent) {
