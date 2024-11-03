@@ -1,16 +1,29 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Root from "./router/Root.js";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Chat from "./pages/Chat.js";
+import Login from "./pages/Login.js";
+import Register from "./pages/Register.js";
+import Channel from "./pages/Channel.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "react-bootstrap";
+import Navbar from "./components/navbar/Navbar.js";
+import { AuthContextProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route path="/" element={<Root />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <AuthContextProvider>
+        <Navbar />
+        <Container>
+          <Routes>
+            <Route path="/" element={<Chat />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/channel" element={<Channel />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Container>
+      </AuthContextProvider>
+    </>
   );
 }
 

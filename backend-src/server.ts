@@ -1,9 +1,15 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/userRoutes.js"; // Se till att sökvägen är korrekt
-
+import cors from "cors";
 const app: Express = express();
+app.use(cors());
 const port = process.env.PORT || 3000;
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use("/", express.json());
 
 app.get("/", (_req, res) => {
@@ -16,7 +22,7 @@ app.use("/", (req: Request, _res: Response, next: NextFunction) => {
 
 app.use("/user", userRoutes);
 
-// app.use("/", express.static("./frontend-src"));
+app.use("/", express.static("./src"));
 
 app.listen(port, () => {
   console.log("Server is listening on port " + port);

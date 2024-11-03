@@ -1,0 +1,23 @@
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1em;
+  background-color: #1e1e1e;
+  align-items: center;
+}
+a {
+  color: rgb(243, 238, 238);
+  /* margin: 0 1em; */
+  background-color: none;
+
+  text-decoration: none;
+}
+.nav-Center {
+  justify-content: space-between;
+  /* flex-wrap: wrap; */
+}
+.nav-Right {
+  display: flex;
+  gap: 1em;
+}
