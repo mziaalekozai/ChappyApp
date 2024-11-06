@@ -25,6 +25,7 @@ router.get("/", async (_req: Request, res: Response) => {
   }
 });
 
+// Endpoint for searching users by id
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -40,7 +41,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
+// endpoint for adding users
 router.post("/addUser", async (req: Request, res: Response) => {
   const newUser: User = req.body;
   if (!isValidUser(newUser)) {
@@ -60,7 +61,7 @@ router.post("/addUser", async (req: Request, res: Response) => {
     }
   }
 });
-
+// Endpoint for updating users by id
 router.put("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const body: Partial<User> = req.body;
@@ -87,7 +88,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
+// Endpoint for deleting users
 router.delete("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -125,4 +126,22 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint för gästinloggning
+router.post("/guestLogin", async (_req: Request, res: Response) => {
+  try {
+    // Skapa eller hämta en generisk gästanvändarprofil
+    const guestUser = {
+      username: "Guest",
+      role: "guest",
+    };
+
+    res.status(200).json({
+      message: "Guest login successful",
+      user: guestUser,
+    });
+  } catch (error) {
+    console.error("Error handling guest login:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 export default router;

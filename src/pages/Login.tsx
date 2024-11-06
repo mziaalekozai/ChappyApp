@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Form, Button, Alert, Row, Col, Stack } from "react-bootstrap";
 import handleUser from "../components/users/HandleUser.js"; // Make sure the path is correct
+import GuestLoginButton from "../components/users/GuestLogin.js";
+import { useNavigate } from "react-router-dom"; // Importera useNavigate för navigering
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -8,12 +10,17 @@ const Login = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(""); // State for success messages
 
+  const navigate = useNavigate(); // Hook för att navigera
+
   const handleLogin = async () => {
     await handleUser("login", { username, password }, setError, setSuccess);
+    if (!error) {
+      navigate("/"); // Navigera till huvudsidan
+    }
   };
 
   return (
-    <Form className="main-form" onSubmit={handleLogin}>
+    <Form className="main-form">
       <Row className="row">
         <Col xs={12} md={8}>
           <Stack gap={3}>
@@ -39,6 +46,8 @@ const Login = () => {
               />
             </Form.Group>
             <Button onClick={handleLogin}>Login</Button>
+            <GuestLoginButton />
+
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
           </Stack>

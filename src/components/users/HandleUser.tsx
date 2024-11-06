@@ -14,6 +14,7 @@ const handleUser = async (
     console.log(`${url} successful.`, data.user);
     setSuccess(`${url} successful!`); // Notify success state
     return data; // Optionally return data if needed
+    console.log(data);
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
       setError(error.response.data.message || `Failed to ${url}.`);

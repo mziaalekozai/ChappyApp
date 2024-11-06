@@ -30,8 +30,6 @@ const Register = () => {
         <Col xs={12} md={8}>
           <Stack gap={3}>
             <h2>Register</h2>
-            {error && <Alert variant="danger">{error}</Alert>}
-            {success && <Alert variant="success">{success}</Alert>}
             <Form.Control
               type="text"
               value={name}
@@ -54,6 +52,8 @@ const Register = () => {
               required
             />
             <Button onClick={handleRegister}>Register</Button>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {success && <Alert variant="success">{success}</Alert>}
           </Stack>
         </Col>
       </Row>
