@@ -9,10 +9,12 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState<string>("");
 
   useEffect(() => {
+    console.log("hej");
     const loadMessages = async () => {
       if (channelId) {
         try {
           const fetchedMessages = await fetchMessages(channelId);
+          console.log("medelande", fetchMessages);
           setMessages(fetchedMessages);
         } catch (error) {
           console.error("Error fetching messages:", error);

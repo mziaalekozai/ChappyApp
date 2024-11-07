@@ -27,7 +27,7 @@ app.use("/user", userRoutes);
 app.use("/message", chatMessagesRouter);
 app.use("/room", roomRoutes);
 
-app.use("/", express.static("./src"));
+app.use("/", express.static("./dist"));
 
 app.listen(port, () => {
   console.log("Server is listening on port " + port);

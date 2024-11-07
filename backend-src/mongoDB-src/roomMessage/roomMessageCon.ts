@@ -19,7 +19,7 @@ export async function connectToChatDB(): Promise<
 
   const db: Db = client.db("Chappy"); // Ensure the DB name is correct
   const collection: Collection<ChatMessage> =
-    db.collection<ChatMessage>("ChatMessages"); // Adjusted to new collection name
+    db.collection<ChatMessage>("roomChat"); // Adjusted to new collection name
 
   return [collection, client];
 }

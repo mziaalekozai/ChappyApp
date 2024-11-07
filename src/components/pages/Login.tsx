@@ -80,7 +80,7 @@
 // export default Login;
 
 import { useState } from "react";
-import { Form, Button, Alert, Row, Col, Stack } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import handleUser from "../users/HandleUser.js"; // Make sure the path is correct
 import GuestLoginButton from "../users/GuestLogin.js";
 import { useNavigate } from "react-router-dom"; // Importera useNavigate för navigering
@@ -105,43 +105,37 @@ const Login = () => {
     // <Register />;
   }
   return (
-    <Form className="main-form">
-      <Row className="row">
-        <Col xs={12} md={2}>
-          <Stack gap={1}>
-            <h2>Login</h2>
-            <Form.Group>
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-                required
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-              />
-            </Form.Group>
-            <Button onClick={handleLogin}>Login</Button>
-            <GuestLoginButton />
-            <h2 className="reg-link" onClick={handleRegister}>
-              Creat acount
-            </h2>
+    <div className="main-form">
+      <h2>Login</h2>
+      <Form.Group>
+        <Form.Label>Username</Form.Label>
+        <Form.Control
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          required
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+        />
+      </Form.Group>
+      <Button onClick={handleLogin}>Login</Button>
+      <GuestLoginButton />
+      <h2 className="reg-link" onClick={handleRegister}>
+        Creat acount
+      </h2>
 
-            {error && <Alert variant="danger">{error}</Alert>}
-            {success && <Alert variant="success">{success}</Alert>}
-          </Stack>
-        </Col>
-      </Row>
-    </Form>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">{success}</Alert>}
+    </div>
   );
 };
 
