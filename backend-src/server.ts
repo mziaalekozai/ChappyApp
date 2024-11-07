@@ -14,10 +14,11 @@ app.use(
   })
 );
 app.use("/", express.json());
+app.use("/", express.static("./dist"));
 
-app.get("/", (_req, res) => {
-  res.send("Hello Chappy!");
-});
+// app.get("/", (_req, res) => {
+//   res.send("Hello Chappy!");
+// });
 app.use("/", (req: Request, _res: Response, next: NextFunction) => {
   console.log(`${req.method} ${req.url}`, req.body);
   next();
@@ -26,8 +27,6 @@ app.use("/", (req: Request, _res: Response, next: NextFunction) => {
 app.use("/user", userRoutes);
 app.use("/message", chatMessagesRouter);
 app.use("/room", roomRoutes);
-
-app.use("/", express.static("./dist"));
 
 app.listen(port, () => {
   console.log("Server is listening on port " + port);

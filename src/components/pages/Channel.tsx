@@ -11,7 +11,7 @@ const Channels = () => {
   useEffect(() => {
     const fetchChannels = async () => {
       try {
-        const response = await axios.get<Room[]>("http://localhost:3000/room");
+        const response = await axios.get<Room[]>("http://localhost:2000/room");
         console.log("Fetched channels data:", response.data);
         setChannels(response.data);
       } catch (error) {
