@@ -14,7 +14,7 @@ const GuestLogin = () => {
       );
       console.log("Logged in as guest:", response.data.user);
       setError(""); // Rensa tidigare felmeddelanden vid framgångsrik inloggning
-      navigate("/guest-view"); // Navigera till gästvyn
+      navigate("/channel"); // Navigera till gästvyn
     } catch (err) {
       let message = "Network or server error"; // Standardmeddelande om inget specifikt felmeddelande fångas
       if (axios.isAxiosError(err)) {

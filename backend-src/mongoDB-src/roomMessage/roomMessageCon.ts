@@ -1,6 +1,6 @@
 // db/connectToChatDB.ts
 import { MongoClient, Db, Collection } from "mongodb";
-import { ChatMessage } from "../../models/RoomMessage.js";
+import { ChatMessage } from "../../models/ChatMessage.js";
 
 const connectionString: string =
   process.env.CONNECTION_STRING || "yourMongoDBConnectionString";

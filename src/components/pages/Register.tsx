@@ -1,7 +1,9 @@
 // Register.tsx
 import { useState } from "react";
 import { Alert, Button, Form, Row, Col, Stack } from "react-bootstrap";
-import handleUser from "../components/users/HandleUser.js"; // Ensure this path is correct
+import handleUser from "../users/HandleUser.js"; // Ensure this path is correct
+import "../../styles/Register.css";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -9,6 +11,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate(); // Hook för att navigera
 
   const handleRegister = async () => {
     // Assuming you have state hooks for name, email, password, setError, setSuccess
@@ -19,6 +22,11 @@ const Register = () => {
       setSuccess
     );
   };
+
+  function handleLogin() {
+    navigate("/login");
+    // <Register />;
+  }
   // const onSubmit = (e) => {
   //   e.preventDefault(); // Prevent the form from refreshing the page
   //   handleRegister(name, email, password, setError, setSuccess);
@@ -54,6 +62,7 @@ const Register = () => {
             <Button onClick={handleRegister}>Register</Button>
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
+            <Button onClick={handleLogin}>Login</Button>
           </Stack>
         </Col>
       </Row>
@@ -62,38 +71,3 @@ const Register = () => {
 };
 
 export default Register;
-
-// import { Alert, Button, Form, Row, Col, Stack } from "react-bootstrap";
-// import "../styles/Register.css";
-// import { useContext } from "react";
-// import { AuthContext } from "../context/AuthContext.js";
-
-// const Register = () => {
-//   const { user } = useContext(AuthContext);
-//   return (
-//     <>
-//       <Form className="main-form">
-//         <Row className="row">
-//           <Col xs={8}>
-//             <Stack gap={3}>
-//               <h2>Register</h2>
-//               <h2>{user}</h2>
-
-//               <Form.Control type="text" placeholder="Enter Name" />
-//               <Form.Control type="email" placeholder="Enter email" />
-//               <Form.Control type="password" placeholder="Enter password" />
-//               <Button variant="primary" type="submit">
-//                 Register
-//               </Button>
-//               <Alert variant="danger">
-//                 <p>An error occured</p>
-//               </Alert>
-//             </Stack>
-//           </Col>
-//         </Row>
-//       </Form>
-//     </>
-//   );
-// };
-
-// export default Register;

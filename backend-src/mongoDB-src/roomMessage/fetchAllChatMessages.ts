@@ -1,5 +1,5 @@
 import { connectToChatDB } from "./roomMessageCon.js";
-import { ChatMessage } from "../../models/RoomMessage.js";
+import { ChatMessage } from "../../models/ChatMessage.js";
 import { MongoClient, Collection, WithId } from "mongodb";
 
 async function fetchAllChatMessages(): Promise<WithId<ChatMessage>[]> {

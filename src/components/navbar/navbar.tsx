@@ -15,10 +15,11 @@ const Navbar = () => {
     <div>
       <nav>
         <div className="nav-Left">
-          <NavLink to="/">Chat</NavLink>
+          <NavLink to="/login">Chat</NavLink>
+          Chapp
         </div>
         <div className="nav-Center">
-          <NavLink to="/channel">Channel</NavLink>
+          {/* <NavLink to="/channel">Channel</NavLink> */}
         </div>
         <div className="nav-Right">
           {user ? (
@@ -31,7 +32,7 @@ const Navbar = () => {
           ) : (
             <div className="login-btn">
               <NavLink to="/login">Login</NavLink>
-              <NavLink to="/register">Register</NavLink>
+              {/* <NavLink to="/register">Register</NavLink> */}
             </div>
           )}
         </div>

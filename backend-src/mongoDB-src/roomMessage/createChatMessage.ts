@@ -1,5 +1,5 @@
 import { MongoClient, Collection, ObjectId, InsertOneResult } from "mongodb";
-import { ChatMessage } from "../../models/RoomMessage.js";
+import { ChatMessage } from "../../models/ChatMessage.js";
 import { connectToChatDB } from "../../mongoDB-src/roomMessage/roomMessageCon.js";
 
 // Function name corrected for standard camelCase convention

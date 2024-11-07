@@ -1,6 +1,6 @@
 // routes/chatMessages.ts
 import express, { Request, Response, Router } from "express";
-import { ChatMessage } from "../models/RoomMessage.js";
+import { ChatMessage } from "../models/ChatMessage.js";
 import { fetchAllChatMessages } from "../mongoDB-src/roomMessage/fetchAllChatMessages.js";
 import { createChatMessage } from "../mongoDB-src/roomMessage/createChatMessage.js";
 import { isValidRoomMessage } from "../data/validationRoomMessage.js";

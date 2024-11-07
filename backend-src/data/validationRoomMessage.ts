@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { ChatMessage } from "../models/RoomMessage.js";
+import { ChatMessage } from "../models/ChatMessage.js";
 
 export const RoomMessageSchema = Joi.object({
   textMessage: Joi.string().min(1).required().messages({
