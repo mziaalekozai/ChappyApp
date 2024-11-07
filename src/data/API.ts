@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Room } from "../models/Room";
-import { Message } from "../models/MessageRom.js";
+import { Message } from "../models/RoomMessage.js";
 
 const BASE_URL = "http://localhost:2000";
 // const BASE_URL = "";

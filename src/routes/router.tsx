@@ -4,8 +4,8 @@ import App from "../App.js";
 import Login from "../components/pages/Login.js";
 import Register from "../components/pages/Register.js";
 import GuestView from "../components/users/GuestLogin.js";
-import Channel from "../components/pages/Channel.js";
-import RoomChat from "../components/pages/RoomChat.js"; // Lägg till RoomChat
+import Channel from "../components/rooms/Channel.js";
+import ChatRoom from "../components/chat/chatRoom.js"; // Lägg till RoomChat
 
 const router = createHashRouter([
   {
@@ -17,7 +17,7 @@ const router = createHashRouter([
       { path: "/register", element: <Register /> },
       { path: "/guest-view", element: <GuestView /> },
       { path: "/channel", element: <Channel /> },
-      { path: "/room/:roomId", element: <RoomChat /> }, // Ny rutt för RoomChat
+      { path: "/room/:roomId", element: <ChatRoom /> }, // Ny rutt för RoomChat
     ],
   },
 ]);

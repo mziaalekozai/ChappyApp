@@ -10,7 +10,7 @@ const GuestLogin = () => {
   const handleGuestLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/user/guestLogin"
+        "http://localhost:2000/user/guestLogin"
       );
       console.log("Logged in as guest:", response.data.user);
       setError(""); // Rensa tidigare felmeddelanden vid framgångsrik inloggning
