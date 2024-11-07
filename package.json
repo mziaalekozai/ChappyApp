@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "start": "node --env-file .env ./backendDist/server.js",
+    "build-backend": " rm -rf backendDist && tsc --project tsconfig.backend.json",
+    "start-backend": "node --env-file .env ./backendDist/server.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "backend": "tsc --project tsconfig.backend.json && node --env-file .env ./backendDist/server.js"
