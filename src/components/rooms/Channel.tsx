@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllRooms } from "../../allFunctions/getAllRooms.js"; // Ange den korrekta sökvägen till din getAllRooms.ts fil
+import { getAllRooms } from "./getAllRooms.js"; // Ange den korrekta sökvägen till din getAllRooms.ts fil
 import { Room } from "../../models/Room.js"; // Ange sökvägen till din Room-modell
 import { useNavigate } from "react-router-dom";
 

@@ -1,4 +1,4 @@
-import { Room } from "../models/Room.js";
+import { Room } from "../../models/Room.js";
 
 export async function getAllRooms(): Promise<Room[] | null> {
   try {
