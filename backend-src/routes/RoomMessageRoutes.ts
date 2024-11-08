@@ -9,7 +9,7 @@ import {
 
 export const router: Router = express.Router();
 
-router.get("/getMessages", async (_, res: Response) => {
+router.get("/getMessages/:roomMame", async (_, res: Response) => {
   console.log("Get Message route hit");
   try {
     const messages = await fetchAllChatMessages();

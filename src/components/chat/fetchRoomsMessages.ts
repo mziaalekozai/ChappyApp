@@ -1,8 +1,10 @@
 import { RoomMessage } from "../../models/RoomMessage.js"; // Anpassa sökvägen för din modell
 
-export async function fetchRoomMessages(): Promise<RoomMessage[] | null> {
+export async function fetchRoomMessages(
+  roomId: string
+): Promise<RoomMessage[] | null> {
   try {
-    const response = await fetch(`/api/message/getMessages`, {
+    const response = await fetch(`/api/message/getMessages/${roomId}`, {
       method: "GET",
     });
     if (!response.ok) {
