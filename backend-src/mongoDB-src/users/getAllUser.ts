@@ -9,9 +9,6 @@ async function fetchAllUsers(): Promise<WithId<User>[]> {
       await connectToDatabase();
     client = dbClient; // Assign to outer scope for finally block
 
-    // const cursor: FindCursor<WithId<User>> = userCollection.find({});
-    // const users: WithId<User>[] = await cursor.toArray();
-
     const users: WithId<User>[] = await userCollection.find({}).toArray();
     console.log("Fetched all users from the database.", users);
     if (!users.length) {

@@ -1,28 +1,35 @@
 import { useState } from "react";
-import handleUser from "../users/HandleUser.js"; // Kontrollera att sökvägen är korrekt
-import GuestLoginButton from "../users/GuestLogin.js";
-import { useNavigate } from "react-router-dom"; // Importera useNavigate för navigering
+import handleLogin from "./HandleLogin"; // Importera handleLogin från HandleLogin.ts
+import GuestLoginButton from "./GuestLogin.js";
+import { useNavigate } from "react-router-dom";
 import "../../styles/Loging.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(""); // State för framgångsmeddelanden
+  const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    // Rensa tidigare felmeddelande
+  const onLogin = async () => {
     setError("");
     setSuccess("");
 
-    // Försök logga in användaren
-    await handleUser("login", { username, password }, setError, setSuccess);
+    // Använd handleLogin för att hantera inloggning
+    const result = await handleLogin(
+      username,
+      password,
+      navigate,
+      setError,
+      setSuccess
+    );
 
-    // Om det inte finns något fel efter inloggningen, navigera till "/channel"
-    if (!error) {
-      navigate("/channel");
+    // Visa framgångs- eller felmeddelande baserat på resultatet från handleLogin
+    if (result.success) {
+      setSuccess(result.message);
+    } else {
+      setError(result.message);
     }
   };
 
@@ -55,16 +62,22 @@ const Login = () => {
           className="form-control"
         />
       </div>
-      <button onClick={handleLogin} className="btn">
+      <div className="main-login-btn"></div>
+      <button
+        onClick={onLogin}
+        className="login-btn"
+        disabled={!username || !password} // Avaktivera knappen om fälten är tomma
+      >
         Login
       </button>
       <GuestLoginButton />
       <h2 className="reg-link" onClick={handleRegister}>
         Create account
       </h2>
-
-      {error && <p className="error-message">{error}</p>}
-      {success && <p className="success-message">{success}</p>}
+      <div className="errorMain">
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
+      </div>
     </div>
   );
 };

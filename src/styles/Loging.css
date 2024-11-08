@@ -1,11 +1,35 @@
-.reg-link {
-  text-align: center;
-  text-decoration: none;
-  font-size: 1em;
+.main-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* height: 100vh; */
+  /* background-color: #f4f4f9; */
 }
-.reg-link:hover {
-  text-decoration: underline;
+
+.form-container {
+  text-align: center;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.login-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  color: rgb(85, 95, 228);
-  transition: color 0.3s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: #d9534f;
+  margin-top: 10px;
 }

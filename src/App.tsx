@@ -1,9 +1,9 @@
-import LoginPage from "./components/pages/Login.js";
+import LoginPage from "./components/login-Register/Login.js";
 import "./App.css";
 
 function App() {
   return (
-    <div>
+    <div className="app-body">
       <LoginPage />
     </div>
   );
