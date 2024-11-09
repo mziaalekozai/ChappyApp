@@ -2,6 +2,7 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/userRoutes.js"; // Se till att sökvägen är korrekt
 import chatMessagesRouter from "./routes/RoomMessageRoutes.js";
 import roomRoutes from "./routes/roomRoutes.js";
+import dmRoutes from "./routes/DMRoutes.js";
 
 const port: number = Number(process.env.PORT || 2000);
 
@@ -15,6 +16,7 @@ app.use("/", (req: Request, _res: Response, next: NextFunction) => {
 app.use("/api/user", userRoutes);
 app.use("/api/message", chatMessagesRouter);
 app.use("/api/room", roomRoutes);
+app.use("/api/dm", dmRoutes);
 app.use("/", express.static("./dist"));
 
 app.listen(port, () => {

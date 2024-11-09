@@ -1,6 +1,6 @@
 export interface Room {
   _id: string;
   name: string;
-  status: boolean;
+  isLocked: boolean;
   image: string;
 }

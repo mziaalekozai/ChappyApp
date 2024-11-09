@@ -2,7 +2,7 @@ import { Room } from "../../models/Room.js";
 
 export async function getAllRooms(): Promise<Room[] | null> {
   try {
-    const response = await fetch("/api/room", { method: "GET" });
+    const response = await fetch("/api/room/rooms", { method: "GET" });
     if (!response.ok) {
       console.error("Failed to fetch rooms, status:", response.status);
       return null;

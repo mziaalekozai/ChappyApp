@@ -1,5 +1,5 @@
 export interface Room {
   name: string;
-  isActive: boolean;
+  isLocked: boolean;
   imageUrl: string;
 }

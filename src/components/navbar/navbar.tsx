@@ -1,117 +1,302 @@
-// import { NavLink, useNavigate } from "react-router-dom";
-// import { useAuth } from "../../context/AuthContext.js";
-// import "./navbar.css";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getActiveUser } from "../users/getActiveUser";
+import { searchUsers } from "../users/searchUsers";
+import handleLogout from "../login-Register/HandleLogOut";
+import "./Navbar.css";
 
-// const Navbar = () => {
-//   const { user, setUser } = useAuth(); // Use the useAuth hook to access user and setUser
-//   const navigate = useNavigate(); // For redirecting the user on logout
+// Define the User interface
+interface User {
+  username: string;
+  // Add other user properties as needed
+}
 
-//   const handleLogout = () => {
-//     setUser(null); // Clear the user from the context
-//     navigate("/login"); // Redirect to the login page
+interface NavbarProps {
+  user: User | null;
+  setUser: (user: User | null) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const activeUsername = await getActiveUser();
+        if (activeUsername) {
+          const userData = await searchUsers(activeUsername);
+          if (userData) {
+            setUser(userData); // Set the user data directly
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching active user:", error);
+      }
+    };
+
+    fetchUser();
+  }, [setUser]);
+
+  const onLogout = async () => {
+    try {
+      const success = await handleLogout();
+      if (success) {
+        setUser(null); // Update user state to null after logout
+        navigate("/login"); // Redirect to login page
+      } else {
+        console.error("Failed to logout");
+        alert("Logout failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("An error occurred while logging out. Please try again.");
+    }
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="Nav-Left">
+        <h1>Chappy</h1>
+      </div>
+      <div className="Nav-Right">
+        {user ? (
+          <div className="navbar-user-info">
+            <span>Welcome, {user.username}</span>
+            <button onClick={onLogout}>Logout</button>
+          </div>
+        ) : (
+          <button onClick={() => navigate("/login")}>Login</button>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
+
+// import React, { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { getActiveUser } from "../users/getActiveUser";
+// import { searchUsers } from "../users/searchUsers";
+// import handleLogout from "../login-Register/HandleLogOut";
+// import "./Navbar.css";
+
+// // Define the User interface
+// interface User {
+//   username: string;
+//   // Add other user properties as needed
+// }
+
+// interface NavbarProps {
+//   user: User | null;
+//   setUser: (user: User | null) => void;
+// }
+
+// const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchUser = async () => {
+//       const activeUsername = await getActiveUser();
+//       if (activeUsername) {
+//         const userData = await searchUsers(activeUsername);
+//         if (userData) {
+//           setUser(userData); // Set the user data directly
+//         }
+//       }
+//     };
+
+//     fetchUser();
+//   }, [setUser]);
+
+//   const onLogout = async () => {
+//     const success = await handleLogout();
+//     if (success) {
+//       setUser(null); // Update user state to null after logout
+//       navigate("/login"); // Redirect to login page
+//     } else {
+//       console.error("Failed to logout");
+//     }
 //   };
 
 //   return (
-//     <div>
-//       <nav>
-//         <div className="nav-Left">
-//           <NavLink to="/login">Chat</NavLink>
-//           Chapp
-//         </div>
-//         <div className="nav-Center">
-//           {/* <NavLink to="/channel">Channel</NavLink> */}
-//         </div>
-//         <div className="nav-Right">
-//           {user ? (
-//             <div className="logOut-btn">
-//               <span>{user?.username || "Guest"}</span>
-//               <button onClick={handleLogout}>Log Out</button>
-//               <span>{user.username || "Guest"}</span>
-//               <button onClick={handleLogout}>Log Out</button>
-//             </div>
-//           ) : (
-//             <div className="login-btn">
-//               <NavLink to="/login">Login</NavLink>
-//               {/* <NavLink to="/register">Register</NavLink> */}
-//             </div>
-//           )}
-//         </div>
-//       </nav>
-//     </div>
+//     <nav className="navbar">
+//       <div className="Nav-Left">
+//         <h1>Chappy</h1>
+//       </div>
+//       <div className="Nav-Right">
+//         {user ? (
+//           <div className="navbar-user-info">
+//             <span>Welcome, {user.username}</span>
+//             <button onClick={onLogout}>Logout</button>
+//           </div>
+//         ) : (
+//           <button onClick={() => navigate("/login")}>Login</button>
+//         )}
+//       </div>
+//     </nav>
 //   );
 // };
 
 // export default Navbar;
 
-// // import { useAuth } from "../../context/AuthContext.js"; // Importera din useAuth hook
-// // import { useEffect } from "react";
-// // import { NavLink, useNavigate } from "react-router-dom";
-// // import HandleLogout from "../users/HandleLogOut.js";
-// // const Navbar = () => {
-// //   const { user, setUser } = useAuth();
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { getActiveUser } from "../users/getActiveUser.js";
+// import { searchUsers } from "../users/searchUsers.js";
+// import handleLogout from "../login-Register/HandleLogOut.js";
+// import "./Navbar.css";
+
+// // Define the User interface
+// interface User {
+//   username: string;
+//   // Add other user properties as needed
+// }
+
+// interface NavbarProps {
+//   user: User | null;
+//   setUser: (user: User | null) => void;
+// }
+
+// const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
+//   const navigate = useNavigate();
+//   const [isGuest, setIsGuest] = useState(false);
+
+//   useEffect(() => {
+//     const fetchUser = async () => {
+//       const activeUsername = await getActiveUser();
+//       if (activeUsername) {
+//         const userData = await searchUsers(activeUsername);
+//         if (userData && userData.length > 0) {
+//           setUser(userData[0]); // Set the first user from the search results
+//           setIsGuest(false);
+//         }
+//       } else {
+//         setIsGuest(true);
+//       }
+//     };
+
+//     fetchUser();
+//   }, [setUser]);
+
+//   const onLogout = async () => {
+//     const success = await handleLogout();
+//     if (success) {
+//       setUser(null); // Update user state to null after logout
+//       setIsGuest(true);
+//       navigate("/login"); // Redirect to login page
+//     } else {
+//       console.error("Failed to logout");
+//     }
+//   };
+
+//   return (
+//     <nav className="navbar">
+//       <div className="Nav-Left">
+//         <h1>Chappy</h1>
+//       </div>
+//       <div className="Nav-Right">
+//         {isGuest ? (
+//           <button onClick={() => navigate("/login")}>Login</button>
+//         ) : (
+//           user && (
+//             <div className="navbar-user-info">
+//               <span>Welcome, {user.username}</span>
+//               <button onClick={onLogout}>Logout</button>
+//             </div>
+//           )
+//         )}
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;
+
+// // import React from "react";
+// // import { useNavigate } from "react-router-dom";
+// // import handleLogout from "../login-Register/HandleLogOut"; // Ensure path is correct
+// // import "./Navbar.css";
+
+// // interface NavbarProps {
+// //   user: { username: string } | null;
+// //   setUser: (user: null) => void;
+// // }
+
+// // const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
 // //   const navigate = useNavigate();
 
-// //   // Lägg till useEffect för att kontrollera användarstatus
-// //   useEffect(() => {
-// //     console.log("Användaren har uppdaterats:", user);
-// //   }, [user]); // Dependency array med user så att det triggas när user ändras
-
-// //   const handleLogout = () => {
-// //     setUser(null); // Nollställ användarinformationen vid utloggning
-// //     navigate("/login"); // Navigera till inloggningssidan efter utloggning
+// //   const onLogout = async () => {
+// //     const success = await handleLogout();
+// //     if (success) {
+// //       setUser(null); // Update user state to null after logout
+// //       navigate("/login"); // Redirect to login page
+// //     } else {
+// //       console.error("Failed to logout");
+// //     }
 // //   };
 
 // //   return (
-// //     <div>
-// //       <nav>
-// //         <div className="nav-Left">
-// //           <NavLink to="/">Chat</NavLink>
-// //         </div>
-// //         <div className="nav-Center">
-// //           <NavLink to="/channel">Channel</NavLink>
-// //         </div>
-// //         <div className="nav-Right">
-// //           {user ? (
-// //             <>
-// //               <span>{user.username || "Guest"}</span>
-// //               <button onClick={handleLogout}>Log Out</button>
-// //             </>
-// //           ) : (
-// //             <>
-// //               <NavLink to="/login">Login</NavLink>
-// //               <NavLink to="/register">Register</NavLink>
-// //             </>
-// //           )}
-// //         </div>
-// //       </nav>
-// //     </div>
+// //     <nav className="navbar">
+// //       <div className="Nav-Left">
+// //         <h1>Chappy</h1>
+// //       </div>
+// //       <div className="Nav-Right">
+// //         {user ? (
+// //           <div className="navbar-user-info">
+// //             <span>Welcome, {user.username}</span>
+// //             <button onClick={onLogout}>Logout</button>
+// //           </div>
+// //         ) : (
+// //           <button onClick={() => navigate("/login")}>Login</button>
+// //         )}
+// //       </div>
+// //     </nav>
 // //   );
 // // };
 
 // // export default Navbar;
 
-// // import { NavLink } from "react-router-dom";
-// // import "./navbar.css";
-// // const Navbar = () => {
-// //   return (
-// //     <div>
-// //       <nav>
-// //         <div className="nav-Left">
-// //           {/* <NavLink to="/">
-// //             <img className="logo" src={Logo} alt="logo" />
-// //           </NavLink> */}
-// //           <NavLink to="/">Chat</NavLink>
-// //         </div>
-// //         <div className="nav-Center">
-// //           <NavLink to="/channel">Channel</NavLink>
-// //         </div>
-// //         <div className="nav-Right">
-// //           <NavLink to="/login">Login</NavLink>
-// //           <NavLink to="/register">Register</NavLink>
-// //         </div>
-// //       </nav>
-// //     </div>
-// //   );
-// // };
+// // // import React from "react";
+// // // import { useNavigate } from "react-router-dom";
+// // // import handleLogout from "..//login-Register/HandleLogOut.js";
+// // // import "./Navbar.css";
 
-// // export default Navbar;
+// // // interface NavbarProps {
+// // //   user: { username: string } | null;
+// // //   setUser: (user: null) => void;
+// // // }
+
+// // // const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
+// // //   const navigate = useNavigate();
+
+// // //   const onLogout = async () => {
+// // //     const success = await handleLogout();
+// // //     if (success) {
+// // //       setUser(null); // Update user state to null after logout
+// // //       navigate("/login"); // Redirect to login page
+// // //     } else {
+// // //       console.error("Failed to logout");
+// // //     }
+// // //   };
+
+// // //   return (
+// // //     <nav className="navbar">
+// // //       <div className="Nav-Left">
+// // //         <h1>Chappy</h1>
+// // //       </div>
+// // //       <div className="Nav-Right">
+// // //         {user ? (
+// // //           <div className="navbar-user-info">
+// // //             <span>Welcome, {user.username}</span>
+// // //             <button onClick={onLogout}>Logout</button>
+// // //           </div>
+// // //         ) : (
+// // //           <button onClick={() => navigate("/login")}>Login</button>
+// // //         )}
+// // //       </div>
+// // //     </nav>
+// // //   );
+// // // };
+
+// // // export default Navbar;

@@ -1,33 +1,22 @@
-// import { User } from "../data/models/User";
+import { User } from "../../models/User";
 
-// interface ErrorMessage {
-//     message: string
-// }
+async function searchUsers(id: string): Promise<User | undefined> {
+  try {
+    const response = await fetch(`/api/users/${id}`, {
+      method: "GET",
+    });
 
-// async function searchUsers(query: string): Promise<User[] | undefined> {
+    if (!response.ok) {
+      console.log("User not found!");
+      return undefined;
+    }
 
-//     try {
-//     const response = await fetch(`/api/users/search?q=${query}`, {
-//         method: "GET",
-//       });
+    const user: User = await response.json();
+    return user;
+  } catch (error) {
+    console.error("Network error: ", error);
+    return undefined;
+  }
+}
 
-//       if (!response.ok) {
-//         console.log("Found no user!");
-
-//     }
-//     const users: User[] | ErrorMessage = await response.json();
-
-//     if("message" in users) {
-//         console.log("Error: ", users.message)
-//         return undefined
-//     }
-
-//     return users
-
-//     } catch (error) {
-//       console.error("Nätverksfel: ", error);
-
-//     }
-//   }
-
-// export {searchUsers}
+export { searchUsers };

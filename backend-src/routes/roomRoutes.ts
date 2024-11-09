@@ -6,26 +6,47 @@ import { Room } from "../models/Room.js";
 import { deleteRoom } from "../mongoDB-src/rooms/deleteRoom.js";
 import { getMessagesByRoomId } from "../mongoDB-src/roomMessage/getMessagesByRoomId.js";
 import { addMessageToRoom } from "../mongoDB-src/roomMessage/addMessageToRoom.js";
+import { WithId } from "mongodb";
 const router = express.Router();
 
-// Route för att hämta alla rum (med eller utan filter baserat på användartyp)
-router.get("/", async (req: Request, res: Response) => {
+router.get("/rooms", async (req, res) => {
+  const userType = req.query.userType; // Assume you pass userType as a query parameter
+
   try {
-    const userType = req.query.userType as string;
-    let rooms;
+    let channels: WithId<Room>[];
     if (userType === "guest") {
-      rooms = await fetchAllRooms({ isActive: true });
+      // Guests can only see open channels
+      channels = await fetchAllRooms({ isLocked: false });
     } else {
-      rooms = await fetchAllRooms();
+      // Logged-in users can see both open and locked channels
+      channels = await fetchAllRooms();
     }
-    res.json(rooms);
-  } catch (error: unknown) {
-    res.status(500).json({
-      message: "Failed to retrieve rooms",
-      error: error instanceof Error ? error.message : undefined,
-    });
+
+    res.json(channels);
+  } catch (error) {
+    console.error("Error fetching rooms:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
+
+// Route för att hämta alla rum (med eller utan filter baserat på användartyp)
+// router.get("/", async (req: Request, res: Response) => {
+//   try {
+//     const userType = req.query.userType as string;
+//     let rooms;
+//     if (userType === "guest") {
+//       rooms = await fetchAllRooms({ isActive: true });
+//     } else {
+//       rooms = await fetchAllRooms();
+//     }
+//     res.json(rooms);
+//   } catch (error: unknown) {
+//     res.status(500).json({
+//       message: "Failed to retrieve rooms",
+//       error: error instanceof Error ? error.message : undefined,
+//     });
+//   }
+// });
 
 // Route för att hämta meddelanden för ett specifikt rum
 router.get("/:roomId/message", async (req: Request, res: Response) => {

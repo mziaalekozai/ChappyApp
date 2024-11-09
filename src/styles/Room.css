@@ -1,0 +1,4 @@
+.room-name.locked {
+  color: gray;
+  cursor: not-allowed;
+}

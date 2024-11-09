@@ -8,6 +8,7 @@ import { addUser } from "../mongoDB-src/users/addUser.js";
 import { updateUser } from "../mongoDB-src/users/updateUsers.js";
 import { deleteUser } from "../mongoDB-src/users/deleteUser.js";
 import { loginUser } from "../mongoDB-src/users/loginUser.js";
+import { searchUser } from "../mongoDB-src/users/searchUser.js";
 
 export const router: Router = express.Router();
 
@@ -24,23 +25,71 @@ router.get("/", async (_req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
 // Endpoint for searching users by id
 router.get("/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  // Check if the ID is a valid MongoDB ObjectId
+  if (!ObjectId.isValid(id)) {
+    res.status(400).send("Invalid user ID format.");
+  }
+
   try {
-    const id = req.params.id;
-    const mongoObjectId: ObjectId = new ObjectId(id);
+    const mongoObjectId = new ObjectId(id);
     const user = await fetchUserById(mongoObjectId);
-    if (!ObjectId.isValid(id)) {
-      res.status(404).send("No users found");
-    } else {
-      res.status(200).json(user);
+
+    // If no user found, return a 404
+    if (!user) {
+      res.status(404).send("User not found.");
     }
+
+    // If user is found, return it
+    res.status(200).json(user);
   } catch (error) {
     console.error("Error fetching user by ID:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+
+// // Endpoint for searching users by id
+// router.get("/:id", async (req: Request, res: Response) => {
+//   try {
+//     const id = req.params.id;
+//     const mongoObjectId: ObjectId = new ObjectId(id);
+//     const user = await fetchUserById(mongoObjectId);
+//     if (!ObjectId.isValid(id)) {
+//       res.status(404).send("No users found");
+//     } else {
+//       res.status(200).json(user);
+//     }
+//   } catch (error) {
+//     console.error("Error fetching user by ID:", error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
+
+// Endpoint for searching users by a query string (e.g., username)
+router.get("/search", async (req: Request, res: Response) => {
+  const query = req.query.q as string;
+
+  if (!query || query.trim().length === 0) {
+    res.status(400).json({ message: "Search query cannot be empty." });
+    return;
+  }
+
+  try {
+    const users = await searchUser(query);
+    if (users.length === 0) {
+      res.status(404).json({ message: "No users found." });
+    } else {
+      res.status(200).json(users);
+    }
+  } catch (error) {
+    console.error("Error searching users:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 // endpoint for adding users
 router.post("/addUser", async (req: Request, res: Response) => {
   const newUser: User = req.body;
