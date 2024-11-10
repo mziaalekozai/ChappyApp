@@ -9,6 +9,7 @@ import { updateUser } from "../mongoDB-src/users/updateUsers.js";
 import { deleteUser } from "../mongoDB-src/users/deleteUser.js";
 import { loginUser } from "../mongoDB-src/users/loginUser.js";
 import { searchUser } from "../mongoDB-src/users/searchUser.js";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const router: Router = express.Router();
 
@@ -193,4 +194,43 @@ router.post("/guestLogin", async (_req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+// Logout endpoint
+router.post("/logout", (_req: Request, res: Response) => {
+  try {
+    // Om du använder en JWT-strategi: skickar bara en bekräftelse på att logout är klar
+    res.status(200).json({ message: "Logout successful." });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ message: "Logout failed." });
+  }
+});
+
+// Lägg till denna endpoint i din backend i userRoutes eller i en motsvarande fil
+router.get("/activeuser", (req: Request, res: Response) => {
+  if (!process.env.SECRET_KEY) {
+    res.sendStatus(500);
+    return;
+  }
+
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    res.sendStatus(401); // Unauthorized om ingen token skickas
+    return;
+  }
+
+  try {
+    const payload = jwt.verify(token, process.env.SECRET_KEY) as JwtPayload;
+    const userId = payload.userId;
+    if (userId) {
+      res.status(200).json({ userId }); // Returnera användarens ID eller annan användarinformation
+    } else {
+      res.sendStatus(400); // Bad Request om userId saknas
+    }
+  } catch (error) {
+    console.error("Token verification error:", error);
+    res.sendStatus(401); // Unauthorized om token-verifiering misslyckas
+  }
+});
+
 export default router;

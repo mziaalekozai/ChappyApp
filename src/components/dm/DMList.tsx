@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DM } from "../../models/Dm";
+import "../../styles/DMList.css";
 
 const DMList: React.FC<{ username: string }> = ({ username }) => {
   const [dms, setDms] = useState<DM[]>([]);

@@ -1,8 +1,11 @@
-const GuestView = () => {
+import ChannelList from "../rooms/Channel";
+
+const GuestView = ({ onLogout }: { onLogout: () => void }) => {
   return (
     <div>
       <h1>Welcome, Guest!</h1>
-      <p>This is the guest area. Feel free to browse around.</p>
+      <ChannelList />
+      <button onClick={onLogout}>Logout</button>
     </div>
   );
 };
