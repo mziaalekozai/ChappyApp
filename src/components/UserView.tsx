@@ -1,12 +1,12 @@
-import ChannelList from "../rooms/Channel";
-import DMList from "../dm/DMList.js"; // Assuming DMList is created to show DMs
+import { RoomList } from "./RoomList.js";
+import { DMList } from "../components/DMList.js"; // Assuming DMList is created to show DMs
 
 const UserView = ({ onLogout }: { onLogout: () => void }) => {
   return (
     <div>
       <h1>Welcome, User!</h1>
-      <ChannelList />
-      <DMList />
+      <RoomList />
+      <DMList username={""} />
       <button onClick={onLogout}>Logout</button>
     </div>
   );

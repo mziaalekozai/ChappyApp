@@ -13,15 +13,15 @@ router.get("/getMessages/:roomName", async (req: Request, res: Response) => {
   const roomName = req.params.roomName;
 
   try {
-    const messages = await fetchAllChatMessages(roomName); // Pass roomName to filter messages
-    if (!messages || messages.length === 0) {
-      res.status(404).send("No messages found for this room.");
-      return;
+    const messages = await fetchAllChatMessages(roomName);
+    if (!messages) {
+      // If no messages are found, send an empty array with a 200 status
+      res.status(200).json([]);
     }
     res.json(messages);
   } catch (error) {
     console.error("Failed to retrieve messages:", error);
-    res.status(500).send("Server error");
+    res.status(500).json({ message: "Server error" });
   }
 });
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { DM } from "../../models/Dm";
+import { DM } from "../models/Dm";
 import "../../styles/DMList.css";
 
-const DMList: React.FC<{ username: string }> = ({ username }) => {
+export const DMList: React.FC<{ username: string }> = ({ username }) => {
   const [dms, setDms] = useState<DM[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,5 +54,3 @@ const DMList: React.FC<{ username: string }> = ({ username }) => {
     </div>
   );
 };
-
-export default DMList;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getAllRooms } from "./getAllRooms.js"; // Ange den korrekta sökvägen till din getAllRooms.ts fil
-import { Room } from "../../models/Room.js"; // Ange sökvägen till din Room-modell
+import { getAllRooms } from "../data/rooms/getAllRooms"; // Ensure the correct path
+import { Room } from "../models/Room"; // Ensure the correct path
 import { useNavigate } from "react-router-dom";
 
 const RoomList = () => {
@@ -10,16 +10,22 @@ const RoomList = () => {
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const fetchedRooms = await getAllRooms();
-      if (fetchedRooms) {
-        setRooms(fetchedRooms);
-      } else {
-        setError("Failed to fetch rooms");
+      try {
+        const fetchedRooms = await getAllRooms();
+        if (fetchedRooms) {
+          setRooms(fetchedRooms);
+        } else {
+          setError("Failed to fetch rooms");
+        }
+      } catch (err) {
+        console.error("Error fetching rooms:", err);
+        setError("An error occurred while fetching rooms.");
       }
     };
 
     fetchRooms();
   }, []);
+
   const enterRoom = (roomId: string) => {
     navigate(`/room/${roomId}`);
   };
@@ -32,7 +38,7 @@ const RoomList = () => {
         {rooms.map((channel) => (
           <li
             key={channel._id}
-            onClick={() => enterRoom(channel.name)} // Rätt referens till channel._id
+            onClick={() => enterRoom(channel._id)} // Use channel._id for unique identifier
             style={{
               cursor: "pointer",
               color: "blue",
@@ -46,5 +52,4 @@ const RoomList = () => {
     </div>
   );
 };
-
 export default RoomList;

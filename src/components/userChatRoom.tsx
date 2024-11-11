@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchRoomMessages } from "./fetchRoomsMessages";
-import { postNewMessage } from "./postRoomsMessages";
-import { RoomMessage } from "../../models/RoomMessage"; // Anpassa sökvägen för din modell
-import "./ChatRoom.css"; // Anpassa din CSS-fil
+import { fetchRoomMessages } from "../data/chat/fetchRoomsMessages";
+import { postNewMessage } from "../data/chat/postRoomsMessages";
+import { RoomMessage } from "../models/RoomMessage"; // Anpassa sökvägen för din modell
+import "../styles/ChatRoom.css"; // Anpassa din CSS-fil
 
 const RoomChat = () => {
   const { roomId } = useParams<{ roomId: string }>(); // roomId från URL:en
@@ -29,7 +29,7 @@ const RoomChat = () => {
     if (messageInput.trim() === "") return;
 
     const newMessage: Partial<RoomMessage> = {
-      senderName: "User", // Använd den inloggade användarens namn här om det finns
+      senderName: "username", // Använd den inloggade användarens namn här om det finns
       messageText: messageInput,
       roomName: roomId,
       date: new Date(), // Använd Date-objekt direkt

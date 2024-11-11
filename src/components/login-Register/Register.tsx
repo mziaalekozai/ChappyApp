@@ -1,7 +1,7 @@
 import { useState } from "react";
 import handleRegisterUser from "./HandleRigisterUsers.js"; // Kontrollera att sökvägen är korrekt
-import "../../styles/Register.css";
 import { useNavigate } from "react-router-dom";
+import "../../styles/Loging.css";
 
 const Register = () => {
   const [name, setName] = useState("");

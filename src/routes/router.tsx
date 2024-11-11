@@ -3,21 +3,21 @@ import Root from "./Root";
 import App from "../App";
 import Login from "../components/login-Register/Login";
 import Register from "../components/login-Register/Register";
-import GuestView from "../components/login-Register/GuestLogin";
-import Channel from "../components/rooms/Channel";
-import ChatRoom from "../components/chat/chatRoom";
+import GuestChatPage from "../components/GuestChatRoom"; // Adjust the path if needed
+import Channel from "../components/RoomList";
+import UserChatRoom from "../components/userChatRoom";
 
 const router = createHashRouter([
   {
     path: "/",
-    element: <Root />, // Root has Navbar
+    element: <Root />,
     children: [
       { path: "/", element: <App /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-      { path: "/guest-view", element: <GuestView /> },
       { path: "/channel", element: <Channel /> },
-      { path: "/room/:roomId", element: <ChatRoom /> },
+      { path: "/room/:roomId", element: <UserChatRoom /> },
+      { path: "/guestchatPage", element: <GuestChatPage /> },
     ],
   },
 ]);
