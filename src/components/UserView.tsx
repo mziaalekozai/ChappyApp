@@ -1,4 +1,4 @@
-import { RoomList } from "./RoomList.js";
+import RoomList from "./RoomList.js";
 import { DMList } from "../components/DMList.js"; // Assuming DMList is created to show DMs
 
 const UserView = ({ onLogout }: { onLogout: () => void }) => {
