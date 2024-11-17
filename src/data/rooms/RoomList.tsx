@@ -27,7 +27,7 @@ const RoomList = () => {
   const userRole = localStorage.getItem("userRole");
 
   const handleRoomClick = (room: Room) => {
-    if (room.isLocked && userRole === "guest") {
+    if (room.isActive && userRole === "guest") {
       setError("This room is locked. Please log in to access it.");
     } else {
       setError(""); // Clear any previous errors
@@ -41,10 +41,10 @@ const RoomList = () => {
       {rooms.map((room) => (
         <div key={room.name} className="room-item">
           <span
-            className={`room-name ${room.isLocked ? "locked" : ""}`}
+            className={`room-name ${room.isActive ? "locked" : ""}`}
             onClick={() => handleRoomClick(room)}
           >
-            {room.name} {room.isLocked && "(Locked)"}
+            {room.name} {room.isActive && "(Locked)"}
           </span>
         </div>
       ))}
