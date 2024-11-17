@@ -28,14 +28,18 @@ const Register = () => {
       setSuccess("Congratulations! You are registered.");
     }
   };
-
+  const handleLogin = () => {
+    navigate("/login");
+  };
   return (
     <div className="main-form">
       <h2>Register</h2>
       {success ? (
         <>
           <p>Congratulations! You are now registered.</p>
-          <button onClick={() => navigate("/channel")}>Go to Chat Room</button>
+          <button onClick={() => navigate("/login")}>
+            Go to the chatroom by logging in
+          </button>
         </>
       ) : (
         <form onSubmit={handleRegister}>
@@ -73,6 +77,9 @@ const Register = () => {
             />
           </div>
           <button type="submit">Register</button>
+          <h2 className="reg-link" onClick={handleLogin}>
+            Login
+          </h2>
           {error && <p className="error-message">{error}</p>}
         </form>
       )}

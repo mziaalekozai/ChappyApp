@@ -1,61 +1,50 @@
 import express, { Request, Response } from "express";
 import { fetchAllRooms } from "../mongoDB-src/rooms/fetchAllRoom.js";
 import { addRoom } from "../mongoDB-src/rooms/addRoom.js";
-import { validateRoom } from "../data/validationRoom.js";
+import { roomSchema } from "../data/validationRoom.js"; // Importera Joi-schema
 import { Room } from "../models/Room.js";
 import { deleteRoom } from "../mongoDB-src/rooms/deleteRoom.js";
-import { getMessagesByRoomId } from "../mongoDB-src/roomMessage/getMessagesByRoomId.js";
 import { addMessageToRoom } from "../mongoDB-src/roomMessage/addMessageToRoom.js";
-import { WithId } from "mongodb";
+
 const router = express.Router();
 
-router.get("/rooms", async (req, res) => {
-  const userType = req.query.userType; // Assume you pass userType as a query parameter
-
+router.get("/rooms", async (req: Request, res: Response) => {
+  const userType = req.query.userType; // Get userType from query parameter
   try {
-    let channels: WithId<Room>[];
+    let filter = {};
     if (userType === "guest") {
-      // Guests can only see open channels
-      channels = await fetchAllRooms({ isLocked: false });
-    } else {
-      // Logged-in users can see both open and locked channels
-      channels = await fetchAllRooms();
+      filter = { isActive: false }; // Guests see only inactive rooms
     }
-
-    res.json(channels);
+    const rooms = await fetchAllRooms(filter);
+    res.json(rooms);
   } catch (error) {
     console.error("Error fetching rooms:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Route för att hämta alla rum (med eller utan filter baserat på användartyp)
-// router.get("/", async (req: Request, res: Response) => {
-//   try {
-//     const userType = req.query.userType as string;
-//     let rooms;
-//     if (userType === "guest") {
-//       rooms = await fetchAllRooms({ isActive: true });
-//     } else {
-//       rooms = await fetchAllRooms();
-//     }
-//     res.json(rooms);
-//   } catch (error: unknown) {
-//     res.status(500).json({
-//       message: "Failed to retrieve rooms",
-//       error: error instanceof Error ? error.message : undefined,
-//     });
-//   }
-// });
+// Route för att lägga till ett nytt rum med Joi-validering
+router.post("/addRoom", async (req: Request, res: Response) => {
+  const room: Room = req.body;
 
-// Route för att hämta meddelanden för ett specifikt rum
-router.get("/:roomId/message", async (req: Request, res: Response) => {
-  const roomId = req.params.roomId;
+  // Validera inkommande data med Joi
+  const { error } = roomSchema.validate(room);
+  if (error) {
+    res.status(400).json({
+      message: "Invalid room data provided",
+      details: error.details.map((detail) => detail.message),
+    });
+  }
+
   try {
-    const messages = await getMessagesByRoomId(roomId);
-    res.json(messages);
+    // Debug-logga det inkommande rummet
+    console.log("Adding room:", room);
+
+    const roomId = await addRoom(room);
+    res.status(201).json({ message: "Room added successfully", roomId });
   } catch (error) {
-    res.status(500).json({ message: "Failed to retrieve messages", error });
+    console.error("Error adding room:", error);
+    res.status(500).json({ message: "Failed to add room" });
   }
 });
 
@@ -63,28 +52,12 @@ router.get("/:roomId/message", async (req: Request, res: Response) => {
 router.post("/:roomId/message", async (req: Request, res: Response) => {
   const roomId = req.params.roomId;
   const { content, sender } = req.body;
+
   try {
     const newMessage = await addMessageToRoom(roomId, content, sender);
     res.status(201).json(newMessage);
   } catch (error) {
     res.status(500).json({ message: "Failed to add message", error });
-  }
-});
-
-// Route för att lägga till ett nytt rum
-router.post("/addRoom", async (req: Request, res: Response) => {
-  const room: Room = req.body;
-  if (!validateRoom(room)) {
-    res.status(400).json({ message: "Invalid room data provided" });
-  }
-  try {
-    const roomId = await addRoom(room);
-    res.status(201).json({ message: "Room added successfully", roomId });
-  } catch (error: unknown) {
-    res.status(500).json({
-      message: "Failed to add room",
-      error: error instanceof Error ? error.message : undefined,
-    });
   }
 });
 

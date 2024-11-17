@@ -26,11 +26,14 @@ const Login = () => {
       setSuccess
     );
 
-    // If login is successful, update the UserContext
     if (result.success && result.user) {
+      const userWithRole = {
+        ...result.user,
+        role: "defaultRole", // Lägg till en standardroll, byt ut detta mot korrekt värde
+      };
+      setUser(userWithRole);
       setSuccess(result.message);
-      setUser(result.user); // Set the user information in UserContext
-      navigate("/channel"); // Navigate to the channel page
+      navigate("/channel");
     } else {
       setError(result.message);
     }

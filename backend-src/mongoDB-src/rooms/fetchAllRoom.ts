@@ -10,7 +10,11 @@ async function fetchAllRooms(
     await connectToRoomCollection();
 
   try {
-    const result: WithId<Room>[] = await collection.find(filter).toArray();
+    // const result: WithId<Room>[] = await collection.find(filter).toArray();
+    const result: WithId<Room>[] = await collection
+      .find(filter || {})
+      .toArray();
+
     return result;
   } finally {
     await client.close();

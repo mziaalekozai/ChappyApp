@@ -1,4 +1,55 @@
-.room-name.locked {
+.room-list-container {
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.error-message {
+  color: rgb(250, 40, 40);
+  font-weight: bold;
+}
+
+.room-list {
+  list-style: none;
+  padding: 0;
+}
+
+.room-item {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.room-link {
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.room-link.open {
+  color: #007bff;
+}
+
+.room-link.locked {
   color: gray;
   cursor: not-allowed;
+}
+
+.lock-icon {
+  font-size: 16px;
+}
+
+.open-icon {
+  color: green;
+}
+
+.locked-message {
+  color: red;
+  font-size: 14px;
+  margin-left: 10px;
 }

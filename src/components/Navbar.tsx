@@ -1,31 +1,43 @@
-// Navbar.tsx
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
-  const { user, setUser, isGuest, setIsGuest } = useUser();
+  const { user, setUser, setIsGuest } = useUser();
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setUser(null);
     setIsGuest(false);
-    localStorage.removeItem("username"); // Clear guest data if stored
+    localStorage.removeItem("user"); // Clear stored user data
+    localStorage.removeItem("isGuest"); // Clear guest state
     navigate("/login");
   };
 
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   return (
-    <nav>
-      <h1>Chappy</h1>
+    <nav className="navbar">
+      <h1 className="navbar-logo">Chappy</h1>
       {user ? (
-        <>
-          <span>Welcome, {user.username}</span>
-          <button onClick={handleLogout}>
-            {isGuest ? "Leave as Guest" : "Logout"}
-          </button>
-        </>
+        <div className="user-dropdown">
+          <span className="username" onClick={toggleDropdown} title="Open menu">
+            {user.username} ▼
+          </span>
+          {showDropdown && (
+            <ul className="dropdown-menu">
+              <li onClick={() => navigate("/update-user")}>Update User</li>
+              <li onClick={() => navigate("/delete-user")}>Delete User</li>
+              <li onClick={handleLogout}>Logout</li>
+            </ul>
+          )}
+        </div>
       ) : (
-        <button onClick={() => navigate("/login")}>Login</button>
+        <></>
       )}
     </nav>
   );

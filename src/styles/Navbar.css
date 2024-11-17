@@ -1,55 +1,82 @@
-nav {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1em;
-  background-color: #758cc5;
-  align-items: center;
-}
-a {
-  color: rgb(243, 238, 238);
-  /* margin: 0 1em; */
-  background-color: none;
-
-  text-decoration: none;
-}
-.nav-Center {
-  justify-content: space-between;
-  /* flex-wrap: wrap; */
-}
-.nav-Right {
-  display: flex;
-  gap: 1em;
-}
-/* Navbar.css */
+/* Navbar Container */
 .navbar {
   display: flex;
-  flex-direction: row;
-  padding: 10px;
-  background-color: #333;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #121212;
   color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.navbar input {
-  padding: 5px;
-  margin-right: 10px;
-}
-
-.navbar button {
-  padding: 5px 10px;
-}
-
-.navbar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.navbar li {
-  padding: 5px 0;
+/* Logo Styling */
+.navbar-logo {
+  font-size: 24px;
+  color: #a78bfa; /* Lila nyans */
+  margin: 0;
   cursor: pointer;
-  color: #ccc;
 }
 
-.navbar li:hover {
+/* User Dropdown */
+.user-dropdown {
+  position: relative;
+}
+
+.username {
+  font-size: 18px;
+  color: #d4d4d4;
+  cursor: pointer;
+}
+
+.username:hover {
   color: #fff;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: #121212;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  padding: 5px 0;
+  list-style: none;
+  margin: 0;
+  width: 150px;
+  text-align: left;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  font-size: 14px;
+  color: #d4d4d4;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-menu li:hover {
+  background-color: #545353;
+  color: #fff;
+}
+
+/* Login Button */
+.login-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #444;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #575757;
+  transform: scale(1.05);
 }

@@ -2,18 +2,18 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchRoomMessages } from "../data/chat/fetchRoomsMessages";
 import { postNewMessage } from "../data/chat/postRoomsMessages";
-import { RoomMessage } from "../models/RoomMessage"; // Anpassa sökvägen för din modell
-import "../styles/ChatRoom.css"; // Anpassa din CSS-fil
+import { RoomMessage } from "../models/RoomMessage";
+import "../styles/ChatRoom.css";
+import { FaArrowLeft, FaPaperPlane } from "react-icons/fa"; // Importera ikoner
 
 const RoomChat = () => {
-  const { roomId } = useParams<{ roomId: string }>(); // roomId från URL:en
+  const { roomId } = useParams<{ roomId: string }>();
   const [messages, setMessages] = useState<RoomMessage[]>([]);
   const [messageInput, setMessageInput] = useState("");
   const messageDivRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Hämta alla meddelanden för rummet
   const loadMessages = useCallback(async () => {
     const fetchedMessages = await fetchRoomMessages(roomId!);
     if (fetchedMessages) {
@@ -22,17 +22,16 @@ const RoomChat = () => {
     } else {
       setError("Failed to load messages");
     }
-  }, [roomId]); // Lägg till `roomId` som beroende
+  }, [roomId]);
 
-  // Skicka ett nytt meddelande
   const handleSendMessage = async () => {
     if (messageInput.trim() === "") return;
 
     const newMessage: Partial<RoomMessage> = {
-      senderName: "username", // Använd den inloggade användarens namn här om det finns
+      senderName: "username",
       messageText: messageInput,
       roomName: roomId,
-      date: new Date(), // Använd Date-objekt direkt
+      date: new Date(),
     };
 
     const responseMessage = await postNewMessage(newMessage);
@@ -45,7 +44,6 @@ const RoomChat = () => {
     }
   };
 
-  // Scrolla till botten för att visa senaste meddelandet
   const scrollToBottom = () => {
     if (messageDivRef.current) {
       messageDivRef.current.scrollTop = messageDivRef.current.scrollHeight;
@@ -57,14 +55,14 @@ const RoomChat = () => {
   }, [loadMessages]);
 
   const handleBack = () => {
-    navigate("/channel"); // Anpassa vägen för att gå tillbaka
+    navigate("/channel");
   };
 
   return (
     <div className="chat-room-container">
-      <button onClick={handleBack} className="back-button">
-        Go Back
-      </button>
+      <div className="back-button" onClick={handleBack}>
+        <FaArrowLeft /> {/* Back ikon */}
+      </div>
       <h2>Room: {roomId}</h2>
 
       <div className="messages-container" ref={messageDivRef}>
@@ -81,15 +79,20 @@ const RoomChat = () => {
           <p>No messages in this room yet.</p>
         )}
       </div>
-
       <div className="message-input-container">
-        <input
-          type="text"
-          value={messageInput}
-          onChange={(e) => setMessageInput(e.target.value)}
-          placeholder="Type your message..."
-        />
-        <button onClick={handleSendMessage}>Send</button>
+        <div className="input-wrapper">
+          <input
+            type="text"
+            value={messageInput}
+            onChange={(e) => setMessageInput(e.target.value)}
+            placeholder="Type your message..."
+          />
+          <FaPaperPlane
+            className="send-icon"
+            onClick={handleSendMessage}
+            title="Send"
+          />
+        </div>
       </div>
 
       {error && <p className="error-message">{error}</p>}

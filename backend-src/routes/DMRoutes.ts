@@ -9,7 +9,7 @@ import { deleteDM } from "../mongoDB-src/DMs/deleteDM.js";
 
 const router = express.Router();
 
-router.get("/", async (_, res: Response<WithId<Dm>[]>) => {
+router.get("/getDM", async (_, res: Response<WithId<Dm>[]>) => {
   try {
     const dms = await getAllDms();
     res.send(dms);
@@ -18,32 +18,64 @@ router.get("/", async (_, res: Response<WithId<Dm>[]>) => {
     res.sendStatus(500);
   }
 });
-
-router.get("/user/:username", async (req: Request, res: Response) => {
+router.get("/:username", async (req: Request, res: Response) => {
   const { username } = req.params;
   try {
-    const userDms = await getMatchingDms(username);
+    const userDms = await getMatchingDms(username); // Ensure `getMatchingDms` works correctly
     res.json(userDms);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
 });
+router.use((req, res) => {
+  console.error(`Endpoint not found: ${req.method} ${req.url}`);
+  res.status(404).send("Endpoint not found");
+});
 
+// router.get("/user/:username", async (req: Request, res: Response) => {
+//   const { username } = req.params;
+//   try {
+//     const userDms = await getMatchingDms(username);
+//     res.json(userDms);
+//   } catch (error) {
+//     console.error(error);
+//     res.sendStatus(500);
+//   }
+// });
 router.post("/addDM", async (req: Request, res: Response) => {
   const newDm: Dm = req.body;
+
   if (isValidDm(newDm)) {
     try {
-      await creatDm(newDm);
-      res.sendStatus(201);
+      await creatDm(newDm); // Insert the DM into the database
+      res.sendStatus(201); // Success response
     } catch (error) {
-      console.error(error);
-      res.sendStatus(500);
+      console.error("Error creating DM:", error);
+      res.sendStatus(500); // Server error
     }
   } else {
-    res.sendStatus(400);
+    res.status(400).send("Invalid DM data"); // Client error for invalid input
   }
 });
+router.use((req, _res, next) => {
+  console.log(`Received ${req.method} request on ${req.url}`);
+  next();
+});
+// router.post("/addDM/:username", async (req: Request, res: Response) => {
+//   const newDm: Dm = req.body;
+//   if (isValidDm(newDm)) {
+//     try {
+//       await creatDm(newDm);
+//       res.sendStatus(201);
+//     } catch (error) {
+//       console.error(error);
+//       res.sendStatus(500);
+//     }
+//   } else {
+//     res.sendStatus(400);
+//   }
+// });
 router.delete("/delete/:id", async (req: Request, res: Response) => {
   const dmId = req.params.id;
   try {
