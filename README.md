@@ -1,50 +1,93 @@
-# React + TypeScript + Vite
+### user:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+| Method | URL               | body        | Response                                                                 |
+| :----: | :---------------- | :---------- | :----------------------------------------------------------------------- |
+|  GUT   | /api/             | -           | UserList.                                                                |
+|  GUT   | /api/id/          | -           | searching users by id.                                                   |
+|  GET   | /api/user/login   | -           | Answer 404: Not found if user is unauthorized.                           |
+|  GET   | /api/user/search  | -           | searching users by a query string (e.g., username).                      |
+|  POST  | /api/user/addUser | -           | Adding User.                                                             |
+|  PUT   | /api/user/id      | -           | Updating users by id.                                                    |
+| DELETE | /api/user/id      | -           | Deleting users by id.                                                    |
+|  POST  | /api/user/        | User-object | 400: Error searching users<br>400: Failed to create user.Invalid data.   |
+|  PUT   | /api/user/:id"    | User-object | 200: User updated successfully.<br>404: No user found with the given ID. |
+| DELETE | /api/user/:id"    | user-object | 400: Invalid user ID format. <br> 404: No user found or deletion failed. |
 
-Currently, two official plugins are available:
+<br>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### dm:
 
-## Expanding the ESLint configuration
+| Method | URL                                | body | Response                                                   |
+| :----: | :--------------------------------- | :--- | :--------------------------------------------------------- |
+|  GET   | /api/                              | -    | List of dm-objects.                                        |
+|  GET   | /api/dm/:username                  | -    | Answer 404: No DMsfound.                                   |
+|  POST  | /api/dm/                           | -    | 201: DM created successfully.<br>500: Failed to create DM. |
+|  GET   | /api/dm/:senderName/:receiverName" | -    | 404: No messages were found between these users.           |
+| DELETE | /api/dm/id                         | -    | 200: DM deleted successfully.<br> 400: Invalid ID format.  |
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+<br>
 
-- Configure the top-level `parserOptions` property like this:
+### room:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+| Method | URL                  | body | Response                                                |
+| :----: | :------------------- | :--- | :------------------------------------------------------ |
+|  GET   | /api/room            | -    | List of room-objects.                                   |
+|  POST  | /api/:roomId/message | -    | 201: Message added <br>500: Failed to add message       |
+| DELETE | /api/room/id         | -    | 200: Room deleted successfully <br>404: Room not found. |
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+<br>
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### roomMessage:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+| Method | URL                               | body | Response                                      |
+| :----: | :-------------------------------- | :--- | :-------------------------------------------- |
+|  GET   | /api/message/getMessage/:roomName | -    | List of room-messages-objects.                |
+|  POST  | /api/message/:roomId/message      | -    | 201: Created <br> 500: Failed to add message. |
+|  POST  | /api/message/addMessage           | -    | 201: Message created successfully             |
+
+### Interfaces:
+
+<br>
+
+##### User:
+
+| username | email  | image  | password |
+| :------- | :----- | :----- | :------- |
+| string   | string | string | string   |
+
+<br>
+
+##### LoginResult:
+
+| success | message | user? |
+| :------ | :------ | :---- |
+| boolean | string  | User  |
+
+<br>
+
+##### Room:
+
+| name   | isActive | image  |
+| :----- | :------- | :----- |
+| string | boolean  | string |
+
+<br>
+
+##### DmMessage :
+
+| message | receiverNam | senderName | timestamp |
+| :------ | :---------- | :--------- | --------- |
+| string  | string      | string     | Date      |
+
+<br>
+
+##### MessageRoom:
+
+| senderName | content | roomId | timestemp |
+| :--------- | :------ | :----- | --------- | ------ |
+| string     | string  | string | Date      | string |
+
+<br>
+<br>
+
+Published webpage: https://chappyapp-896h.onrender.com/

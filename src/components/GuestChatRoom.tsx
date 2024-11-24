@@ -1,4 +1,4 @@
-import RoomList from "./RoomList";
+import RoomList from "./Channels";
 
 const GuestChatPage = () => {
   return (

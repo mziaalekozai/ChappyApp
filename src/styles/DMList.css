@@ -1,30 +1,31 @@
-ul {
-  list-style-type: none;
-  padding: 0;
+.room-list-container {
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
 
-li {
-  border-bottom: 1px solid #ccc;
-  padding: 8px 0;
-}
-
-li p {
-  margin: 4px 0;
-}
-
-strong {
-  color: #333;
-}
-ul {
+.room-list {
   list-style: none;
   padding: 0;
 }
 
-li {
-  margin: 5px 0;
-  padding: 5px;
+.room-item {
+  margin: 10px 0;
 }
 
-li:hover {
-  background-color: #f0f0f0;
+.room-link {
+  font-size: 18px;
+  text-decoration: none;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.room-link:hover {
+  color: #0056b3;
+}
+
+.error-message {
+  color: rgb(250, 40, 40);
+  font-weight: bold;
 }

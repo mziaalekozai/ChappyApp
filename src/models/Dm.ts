@@ -1,7 +1,7 @@
-export interface DM {
+export interface Dm {
   _id: string;
-  textMessage: string;
-  receiverName: string;
   senderName: string;
+  receiverName: string;
+  textMessage: string;
   date: string;
 }
