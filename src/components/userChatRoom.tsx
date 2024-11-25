@@ -2,11 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchRoomMessages } from "../data/chat/fetchRoomsMessages";
 import { postNewMessage } from "../data/chat/postRoomsMessages";
-import { getAllRooms } from "../data/rooms/getAllRooms"; // Importera din getAllRooms-funktion
+import { getAllRooms } from "../data/rooms/getAllRooms";
 import { RoomMessage } from "../models/RoomMessage";
-import "../styles/ChatRoom.css";
 import { FaArrowLeft, FaPaperPlane } from "react-icons/fa";
 import { useUser } from "../context/UserContext";
+import "../styles/ChatRoom.css";
 
 const RoomChat = () => {
   const { roomId } = useParams<{ roomId: string }>();
@@ -19,29 +19,18 @@ const RoomChat = () => {
   const { user } = useUser();
 
   useEffect(() => {
-    // Hämtar alla rum och sätter det aktuella rummets namn
     const fetchRoomName = async () => {
       try {
         const rooms = await getAllRooms();
-        if (rooms) {
-          const currentRoom = rooms.find((room) => room._id === roomId); // Filtrera rummet
-          if (currentRoom) {
-            setRoomName(currentRoom.name || "Unknown Room");
-          } else {
-            setRoomName("Unknown Room");
-          }
-        } else {
-          setRoomName("Unknown Room");
-        }
+        const currentRoom = rooms?.find((room) => room._id === roomId);
+        setRoomName(currentRoom?.name || "Unknown Room");
       } catch (error) {
         console.error("Error fetching room name:", error);
         setRoomName("Unknown Room");
       }
     };
 
-    if (roomId) {
-      fetchRoomName();
-    }
+    if (roomId) fetchRoomName();
   }, [roomId]);
 
   useEffect(() => {
@@ -60,9 +49,7 @@ const RoomChat = () => {
       }
     };
 
-    if (roomId) {
-      fetchMessages();
-    }
+    if (roomId) fetchMessages();
   }, [roomId]);
 
   const handleSendMessage = async () => {
@@ -83,7 +70,7 @@ const RoomChat = () => {
           { ...newMessage, _id: responseMessage._id },
         ]);
         setMessageInput("");
-        messageDivRef.current?.scrollIntoView({ behavior: "smooth" });
+        scrollToBottom();
       } else {
         console.error("Failed to send message");
       }
@@ -104,19 +91,27 @@ const RoomChat = () => {
 
   return (
     <div className="chat-room-container">
-      <div className="back-button" onClick={handleBack}>
-        <FaArrowLeft />
-        Back
+      <div className="chat-header">
+        <div className="back-button" onClick={handleBack}>
+          <FaArrowLeft />
+          Back
+        </div>
+        <h2 className="chat-title">Room: {roomName}</h2>
       </div>
-      <h2>Room: {roomName}</h2> {/* Visa roomName här */}
       <div className="messages-container" ref={messageDivRef}>
         {messages.length > 0 ? (
           messages.map((message) => (
-            <div key={message._id} className="message-item">
-              <strong>{message.senderName}:</strong> {message.messageText}
-              <p className="timestamp">
+            <div
+              key={message._id}
+              className={`message-item ${
+                message.senderName === user?.username ? "own" : ""
+              }`}
+            >
+              <div className="message-sender">{message.senderName}</div>
+              <div>{message.messageText}</div>
+              <div className="message-timestamp">
                 {new Date(message.date).toLocaleString()}
-              </p>
+              </div>
             </div>
           ))
         ) : (
@@ -124,19 +119,16 @@ const RoomChat = () => {
         )}
       </div>
       <div className="message-input-container">
-        <div className="input-wrapper">
-          <input
-            type="text"
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            placeholder="Type your message..."
-          />
-          <FaPaperPlane
-            className="send-icon"
-            onClick={handleSendMessage}
-            title="Send"
-          />
-        </div>
+        <input
+          type="text"
+          className="message-input"
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+          placeholder="Type your message..."
+        />
+        <button className="send-button" onClick={handleSendMessage}>
+          <FaPaperPlane />
+        </button>
       </div>
       {error && <p className="error-message">{error}</p>}
     </div>

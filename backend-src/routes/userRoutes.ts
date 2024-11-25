@@ -26,6 +26,7 @@ router.get("/", async (_req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 // Endpoint for searching users by id
 router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;

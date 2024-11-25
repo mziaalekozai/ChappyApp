@@ -7,6 +7,7 @@ import GuestChatPage from "../components/GuestChatRoom"; // Adjust the path if n
 import Channel from "../components/Channels";
 import UserChatRoom from "../components/userChatRoom";
 import DMChat from "../components/DMChat";
+import UserList from "../components/UserList";
 
 const router = createHashRouter([
   {
@@ -20,6 +21,7 @@ const router = createHashRouter([
       { path: "/room/:roomId", element: <UserChatRoom /> },
       { path: "/dm/:recipientName", element: <DMChat /> },
       { path: "/guestchatPage", element: <GuestChatPage /> },
+      { path: "/new-chat", element: <UserList /> },
     ],
   },
 ]);

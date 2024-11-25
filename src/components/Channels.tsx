@@ -3,14 +3,14 @@ import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Room } from "../models/Room";
 import { FaLock, FaLockOpen } from "react-icons/fa"; // Import lock icons
-import DMList from "./DMList"; // Justera sökvägen efter var DMList finns
+import DMList from "./DMList"; // Adjust the path for DMList
+import "../styles/DMList.css";
 
-import "../styles/Room.css";
 const Channels = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [lockedRoomId, setLockedRoomId] = useState<string | null>(null); // Track locked room
-  const { isGuest, user } = useUser(); // Lägg till användarinformation
+  const { isGuest, user } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,30 +33,30 @@ const Channels = () => {
 
   const enterRoom = (roomId: string, isLocked: boolean) => {
     if (isGuest && isLocked) {
-      setLockedRoomId(roomId); // Show a message for locked rooms
+      setLockedRoomId(roomId);
     } else {
-      navigate(`/room/${roomId}`); // Navigate to the room
+      navigate(`/room/${roomId}`);
     }
   };
 
   return (
-    <div className="room-list-container">
-      <h2>Channels</h2>
+    <div className="container">
+      <h2 className="channels-title">Channels</h2>
       {error && <p className="error-message">{error}</p>}
-      <ul className="room-list">
+      <ul className="channel-list">
         {rooms.map((room) => (
-          <li key={room._id} className="room-item">
+          <li key={room._id} className="channel-item">
             <span
-              onClick={() => enterRoom(room._id, room.isActive)} // Check if the room is locked
-              className={`room-link ${
+              onClick={() => enterRoom(room._id, room.isActive)}
+              className={`channel-link ${
                 room.isActive && isGuest ? "locked" : "open"
               }`}
             >
               {room.name}{" "}
               {room.isActive && isGuest ? (
-                <FaLock className="lock-icon" /> // Locked icon
+                <FaLock className="lock-icon" />
               ) : (
-                <FaLockOpen className="lock-icon open-icon" /> // Open icon
+                <FaLockOpen className="lock-icon open-icon" />
               )}
             </span>
             {lockedRoomId === room._id && (
@@ -67,8 +67,6 @@ const Channels = () => {
           </li>
         ))}
       </ul>
-      {/* Lägg till DMList under kanallistan */}
-      {/* {user && <DMList username={user.username} />} */}
       {user && <DMList />}
     </div>
   );

@@ -1,31 +1,159 @@
-.room-list-container {
-  max-width: 600px;
-  margin: 20px auto;
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   font-family: Arial, sans-serif;
-  text-align: center;
 }
 
-.room-list {
+/* Channel list section */
+.channels-title {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #00aaff;
+}
+
+.channel-list {
   list-style: none;
   padding: 0;
 }
 
-.room-item {
+.channel-item {
   margin: 10px 0;
-}
-
-.room-link {
-  font-size: 18px;
-  text-decoration: none;
-  color: #007bff;
+  padding: 10px 15px;
+  background-color: #333333;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.3s ease;
   cursor: pointer;
 }
 
-.room-link:hover {
-  color: #0056b3;
+.channel-item:hover {
+  background-color: #444444;
 }
 
-.error-message {
-  color: rgb(250, 40, 40);
+.channel-link {
+  text-decoration: none;
+  color: #00ff7f;
   font-weight: bold;
+}
+
+.channel-link:hover {
+  color: #00cc66;
+}
+
+/* DM list section */
+.dm-title {
+  text-align: center;
+  font-size: 1.8em;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  color: #00aaff;
+}
+
+.dm-list {
+  list-style: none;
+  padding: 0;
+}
+
+.dm-item {
+  margin: 10px 0;
+  padding: 10px 15px;
+  background-color: #333333;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.dm-item:hover {
+  background-color: #444444;
+}
+
+.dm-link {
+  text-decoration: none;
+  color: #ff00ff;
+  font-weight: bold;
+}
+
+.dm-link:hover {
+  color: #cc00cc;
+}
+
+/* New Chat Button */
+.new-chat-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #ffffff;
+  background-color: #00aaff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.new-chat-button:hover {
+  background-color: #0088cc;
+}
+
+/* Back Button */
+.back-button {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  color: #00aaff;
+  cursor: pointer;
+  margin-bottom: 20px;
+  gap: 5px;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #0088cc;
+}
+
+/* User list section */
+.user-list-title {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #00aaff;
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+
+.user-item {
+  margin: 10px 0;
+  padding: 10px 15px;
+  background-color: #333333;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.user-item:hover {
+  background-color: #444444;
+}
+
+.user-link {
+  text-decoration: none;
+  color: #ff9933;
+  font-weight: bold;
+}
+
+.user-link:hover {
+  color: #cc6600;
 }

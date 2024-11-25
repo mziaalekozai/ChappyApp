@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import "../styles/DMList.css";
 
 const DMList = () => {
   const [dmList, setDmList] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useUser(); // Hämta den inloggade användaren
+  const { user } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,13 +36,16 @@ const DMList = () => {
   };
 
   return (
-    <div className="room-list-container">
-      <h2>Your Conversations</h2>
+    <div className="container">
+      <h2 className="dm-title">Your Conversations</h2>
+      <button className="new-chat-button" onClick={() => navigate("/new-chat")}>
+        New Chat
+      </button>
       {error && <p className="error-message">{error}</p>}
-      <ul className="room-list">
+      <ul className="dm-list">
         {dmList.map((name) => (
-          <li key={name} className="room-item">
-            <span className="room-link open" onClick={() => openChat(name)}>
+          <li key={name} className="dm-item">
+            <span className="dm-link" onClick={() => openChat(name)}>
               Chat with {name}
             </span>
           </li>

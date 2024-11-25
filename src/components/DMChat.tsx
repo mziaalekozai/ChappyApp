@@ -1,15 +1,16 @@
-import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import { FaArrowLeft } from "react-icons/fa"; // Importera back-ikon
+import "../styles/ChatRoom.css";
+import { FaArrowLeft, FaPaperPlane } from "react-icons/fa";
 
 const DMChat = () => {
   const { recipientName } = useParams<{ recipientName: string }>();
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const { user } = useUser(); // Hämta inloggad användare
-  const navigate = useNavigate();
+  const { user } = useUser();
   const messageDivRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -24,9 +25,7 @@ const DMChat = () => {
       }
     };
 
-    if (user?.username && recipientName) {
-      fetchMessages();
-    }
+    fetchMessages();
   }, [user, recipientName]);
 
   const sendMessage = async () => {
@@ -46,47 +45,59 @@ const DMChat = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
         setMessages((prev) => [
           ...prev,
-          { ...newMessageData, date: new Date(), _id: data.id },
+          { ...newMessageData, date: new Date() },
         ]);
         setNewMessage("");
         messageDivRef.current?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        console.error("Failed to send message");
       }
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
-
   const handleBack = () => {
-    navigate(-1); // Navigera tillbaka till föregående sida
+    navigate("/channel");
   };
 
   return (
     <div className="chat-room-container">
       <div className="back-button" onClick={handleBack}>
-        <FaArrowLeft /> Back {/* Back-knapp med ikon */}
+        <FaArrowLeft />
+        Back
       </div>
-      <h2>Chat with {recipientName}</h2>
-      <div className="messages-container" ref={messageDivRef}>
-        {messages.map((msg) => (
-          <div key={msg._id} className="message-item">
-            <strong>{msg.senderName}</strong>{" "}
-            <em>({new Date(msg.date).toLocaleString()}):</em> {msg.textMessage}
+      <h2 className="chat-title">Chat with {recipientName}</h2>
+      <div className="messages-container">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`message-item ${
+              msg.senderName === user?.username ? "own" : ""
+            }`}
+          >
+            <div className="message-sender">{msg.senderName}</div>
+            <div>{msg.textMessage}</div>
+            <div className="message-timestamp">
+              {new Date(msg.date).toLocaleString()}
+            </div>
           </div>
         ))}
+        <div ref={messageDivRef} />
       </div>
       <div className="message-input-container">
         <input
           type="text"
+          className="message-input"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type your message..."
         />
-        <button onClick={sendMessage}>Send</button>
+        <button className="send-button" onClick={sendMessage}>
+          <FaPaperPlane />
+        </button>
+        {/* <button className="send-button" onClick={sendMessage}>
+          Send
+        </button> */}
       </div>
     </div>
   );
