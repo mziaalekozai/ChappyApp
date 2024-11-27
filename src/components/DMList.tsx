@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import "../styles/DMList.css";
+import "../styles/sharedStyles.css";
 
 const DMList = () => {
   const [dmList, setDmList] = useState<string[]>([]);

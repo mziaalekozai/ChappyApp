@@ -95,9 +95,6 @@ const DMChat = () => {
         <button className="send-button" onClick={sendMessage}>
           <FaPaperPlane />
         </button>
-        {/* <button className="send-button" onClick={sendMessage}>
-          Send
-        </button> */}
       </div>
     </div>
   );

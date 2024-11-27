@@ -27,7 +27,8 @@ router.get("/rooms", async (req: Request, res: Response) => {
 router.post("/addRoom", async (req: Request, res: Response) => {
   const room: Room = req.body;
 
-  // Validera inkommande data med Joi
+  console.log("Received room data:", room); // Debug-logga inkommande data
+
   const { error } = roomSchema.validate(room);
   if (error) {
     res.status(400).json({
@@ -37,9 +38,7 @@ router.post("/addRoom", async (req: Request, res: Response) => {
   }
 
   try {
-    // Debug-logga det inkommande rummet
-    console.log("Adding room:", room);
-
+    console.log("Adding room:", room); // Debug-logga innan rummet skapas
     const roomId = await addRoom(room);
     res.status(201).json({ message: "Room added successfully", roomId });
   } catch (error) {
