@@ -12,7 +12,7 @@ import "../styles/sharedStyles.css";
 const Channels = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [setLockedRoomId] = useState<string | null>(null);
+  const [, setLockedRoomId] = useState<string | null>(null);
   const [showCreateRoomModal, setShowCreateRoomModal] =
     useState<boolean>(false); // Modal toggle
   const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
