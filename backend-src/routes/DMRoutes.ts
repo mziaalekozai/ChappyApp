@@ -135,4 +135,33 @@ router.get("/dm-list", async (req: Request, res: Response) => {
   }
 });
 
+router.delete("/delete", async (req: Request, res: Response) => {
+  const { username, recipient } = req.query;
+
+  if (!username || !recipient) {
+    res
+      .status(400)
+      .json({ error: "Both username and recipient are required." });
+  }
+
+  try {
+    const [collection, client] = await dmConnect();
+
+    // Ta bort DM mellan användare och recipient
+    await collection.deleteMany({
+      $or: [
+        { senderName: username, receiverName: recipient },
+        { senderName: recipient, receiverName: username },
+      ],
+    });
+
+    await client.close();
+
+    res.status(200).send({ message: "DM deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting DM:", err);
+    res.status(500).send({ error: "Failed to delete DM." });
+  }
+});
+
 export default router;

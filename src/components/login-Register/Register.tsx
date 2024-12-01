@@ -23,7 +23,6 @@ const Register = () => {
       setSuccess
     );
 
-    // Om registreringen lyckas, navigera till chattrummet
     if (result) {
       setSuccess("Congratulations! You are registered.");
     }

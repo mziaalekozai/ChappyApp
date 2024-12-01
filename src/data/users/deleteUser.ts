@@ -1,69 +1,26 @@
-// export const updeteMesageName =  async ( username: string) => {
+// import { useNavigate } from "react-router-dom";
 
-//     try {
+const deleteUser = async (userId: string | undefined) => {
+  if (!userId) {
+    console.error("No user ID provided for deletion.");
+    return;
+  }
 
-//         const data = {username}
-//         const changeResponse = await fetch(`/api/room-messages/delete-username`, {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify( data )
+  try {
+    const response = await fetch(`/api/users/${userId}`, {
+      method: "DELETE",
+    });
 
-//         })
+    if (!response.ok) {
+      throw new Error("Failed to delete user.");
+    }
 
-//         if(changeResponse.status !== 204) {
-//             return changeResponse
-//         }
+    console.log("User deleted successfully.");
+    return true;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return false;
+  }
+};
 
-//     } catch (error) {
-//     console.log("try again later", error);
-
-//     }
-
-// }
-// export const updeteDM =  async ( username: string, id: string) => {
-
-//     try {
-
-//         const data = {username}
-//         const changeResponse = await fetch(`/api/dm/change-senders/${id}`, {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify( data )
-
-//         })
-
-//         if(changeResponse.status !== 204) {
-//             return changeResponse
-//         }
-
-//     } catch (error) {
-//     console.log("try again later", error);
-
-//     }
-
-// }
-// export const deleteUser =  async (id: string) => {
-
-//     try {
-
-//         const response = await fetch(`/api/users/delete/${id}`, {
-//             method: 'DELETE',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//         })
-//         if(response.status !== 201) {
-//             return response
-//         }
-//     } catch (error) {
-//     console.log("try again later", error);
-
-//     }
-
-// }
-// // skapa en ändra roomMessage och DM i MongoDB och Express.
-// // kolla varflr jag får 404 när det fungerar
+export default deleteUser;

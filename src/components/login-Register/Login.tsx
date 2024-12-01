@@ -3,6 +3,7 @@ import handleLogin from "./HandleLogin";
 import GuestLoginButton from "./GuestLogin.js";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext"; // Importera useUser
+// import "../../styles/Register.css";
 import "../../styles/Loging.css";
 
 const Login = () => {
@@ -26,14 +27,12 @@ const Login = () => {
       setSuccess
     );
 
+    // If login is successful, update the UserContext
     if (result.success && result.user) {
-      const userWithRole = {
-        ...result.user,
-        role: "defaultRole", // Lägg till en standardroll, byt ut detta mot korrekt värde
-      };
-      setUser(userWithRole);
       setSuccess(result.message);
-      navigate("/channel");
+      setUser(result.user); // Set the user information in UserContext
+      navigate("/channel"); // Navigate to the channel page
+      // navigate("/dm"); // Navigate to the dm/users page
     } else {
       setError(result.message);
     }
