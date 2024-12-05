@@ -17,13 +17,12 @@
 
 ### dm:
 
-| Method | URL                                | body | Response                                                   |
-| :----: | :--------------------------------- | :--- | :--------------------------------------------------------- |
-|  GET   | /api/                              | -    | List of dm-objects.                                        |
-|  GET   | /api/dm/:username                  | -    | Answer 404: No DMsfound.                                   |
-|  POST  | /api/dm/                           | -    | 201: DM created successfully.<br>500: Failed to create DM. |
-|  GET   | /api/dm/:senderName/:receiverName" | -    | 404: No messages were found between these users.           |
-| DELETE | /api/dm/id                         | -    | 200: DM deleted successfully.<br> 400: Invalid ID format.  |
+| Method | URL                                | body | Response                               |
+| :----: | :--------------------------------- | :--- | -------------------------------------- |
+|  GET   | /api/                              | -    | List of dm-objects.                    |
+|  POST  | /api/dm/                           | -    | 201:DM created successfully.           |
+|  GET   | /api/dm/:senderName/:receiverName" | -    | 404:No mess found between these users. |
+| DELETE | /api/dm/id                         | -    | 200:deleted.<br>400:Invalid ID format. |
 
 <br>
 
@@ -83,7 +82,7 @@
 
 ##### MessageRoom:
 
-| senderName | content | roomId | timestemp |
+| senderName | content | roomId | timestemp |        |
 | :--------- | :------ | :----- | --------- | ------ |
 | string     | string  | string | Date      | string |
 

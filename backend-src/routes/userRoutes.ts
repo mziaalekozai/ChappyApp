@@ -52,23 +52,6 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// // Endpoint for searching users by id
-// router.get("/:id", async (req: Request, res: Response) => {
-//   try {
-//     const id = req.params.id;
-//     const mongoObjectId: ObjectId = new ObjectId(id);
-//     const user = await fetchUserById(mongoObjectId);
-//     if (!ObjectId.isValid(id)) {
-//       res.status(404).send("No users found");
-//     } else {
-//       res.status(200).json(user);
-//     }
-//   } catch (error) {
-//     console.error("Error fetching user by ID:", error);
-//     res.status(500).send("Internal Server Error");
-//   }
-// });
-
 // Endpoint for searching users by a query string (e.g., username)
 router.get("/search", async (req: Request, res: Response) => {
   const query = req.query.q as string;

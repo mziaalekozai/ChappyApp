@@ -1,26 +1,17 @@
-// import { useNavigate } from "react-router-dom";
-
-const deleteUser = async (userId: string | undefined) => {
-  if (!userId) {
-    console.error("No user ID provided for deletion.");
-    return;
-  }
-
+export const deleteUser = async (id: string) => {
   try {
-    const response = await fetch(`/api/users/${userId}`, {
+    const response = await fetch(`/api/user/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-
     if (!response.ok) {
-      throw new Error("Failed to delete user.");
+      throw new Error("Failed to delete user");
     }
-
-    console.log("User deleted successfully.");
-    return true;
+    return response; // Returnera response för att hantera statuskoder i komponenten
   } catch (error) {
-    console.error("Error deleting user:", error);
-    return false;
+    console.error("Error deleting user: ", error);
+    throw error; // Kasta fel för att kunna fånga upp det i komponenten
   }
 };
-
-export default deleteUser;

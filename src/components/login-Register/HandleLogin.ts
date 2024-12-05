@@ -1,10 +1,13 @@
-// HandleLogin.ts
 import { NavigateFunction } from "react-router-dom";
 
 interface LoginResult {
   success: boolean;
   message: string;
-  user?: { username: string };
+  user?: {
+    id: string;
+    role: string;
+    username: string;
+  };
 }
 
 const handleLogin = async (
@@ -30,13 +33,22 @@ const handleLogin = async (
     }
 
     const data = await response.json();
-    navigate("/channel");
-    setSuccess("Login successful!");
-    return {
-      success: true,
-      message: "Login successful!",
-      user: { username: data.user.username },
-    };
+    if (data.user) {
+      navigate("/channel");
+      setSuccess("Login successful!");
+      return {
+        success: true,
+        message: "Login successful!",
+        user: {
+          id: data.user.id, // Se till att dessa värden är definierade i ditt API-svar
+          role: data.user.role,
+          username: data.user.username,
+        },
+      };
+    } else {
+      setError("Login failed, no user data.");
+      return { success: false, message: "Login failed, no user data." };
+    }
   } catch (error) {
     console.error("Login error:", error);
     setError("Network or server error");

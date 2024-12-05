@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Room } from "../models/Room";
-import { FaEdit, FaLock, FaLockOpen, FaTrash } from "react-icons/fa";
+import { FaLock, FaLockOpen, FaTrash } from "react-icons/fa";
 import DMList from "./DMList";
 import CreateRoomForm from "../data/rooms/createNewRoom"; // Importera CreateRoomForm
 import deleteRoom from "../data/rooms/deleteRoom"; // Importera deleteRoom
@@ -13,14 +13,12 @@ const Channels = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [, setLockedRoomId] = useState<string | null>(null);
-  const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
   const [showCreateRoomModal, setShowCreateRoomModal] =
     useState<boolean>(false); // Modal toggle
   const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
   const { isGuest, user } = useUser();
   const navigate = useNavigate();
 
-  // Fetch rooms when component mounts
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -72,31 +70,6 @@ const Channels = () => {
     setRooms((prevRooms) => [...prevRooms, newRoom]); // Uppdatera rooms-state
     setShowCreateRoomModal(false); // Stäng modalen
   };
-  const handleEditRoom = async (updatedRoom: Room) => {
-    try {
-      const response = await fetch(`/api/room/${updatedRoom._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedRoom),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update room");
-      }
-
-      const updatedRoomData = await response.json();
-
-      setRooms((prevRooms) =>
-        prevRooms.map((room) =>
-          room._id === updatedRoom._id ? updatedRoomData : room
-        )
-      );
-      setRoomToEdit(null);
-    } catch (err) {
-      setError("Error updating room");
-      console.error(err);
-    }
-  };
 
   return (
     <div className="container">
@@ -131,11 +104,6 @@ const Channels = () => {
 
             {!isGuest && (
               <>
-                <FaEdit
-                  className="edit-icon"
-                  onClick={() => setRoomToEdit(room)} // Öppna redigeringsformulär
-                  title="Edit Channel"
-                />
                 <FaTrash
                   className="delete-icon"
                   onClick={() => confirmDeleteRoom(room)}
@@ -175,51 +143,6 @@ const Channels = () => {
           </button>
         </div>
       )}
-
-      {roomToEdit && (
-        <div className="modal">
-          <div className="modal-content">
-            <button onClick={() => setRoomToEdit(null)} className="close-modal">
-              ×
-            </button>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleEditRoom(roomToEdit);
-              }}
-            >
-              <label>
-                Room Name:
-                <input
-                  type="text"
-                  value={roomToEdit.name}
-                  onChange={(e) =>
-                    setRoomToEdit((prev) =>
-                      prev ? { ...prev, name: e.target.value } : null
-                    )
-                  }
-                />
-              </label>
-              <label>
-                Locked:
-                <input
-                  type="checkbox"
-                  checked={roomToEdit.isActive}
-                  onChange={(e) =>
-                    setRoomToEdit((prev) =>
-                      prev ? { ...prev, isActive: e.target.checked } : null
-                    )
-                  }
-                />
-              </label>
-              <button type="submit" className="save-button">
-                Save
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-      {/* Modal for Create Room */}
       {showCreateRoomModal && (
         <div className="modal">
           <div className="modal-content">
@@ -228,7 +151,7 @@ const Channels = () => {
               className="close-modal"
             >
               {" "}
-              jag fattar ×
+              ×
             </button>
             <CreateRoomForm onRoomCreated={handleRoomCreated} />
           </div>

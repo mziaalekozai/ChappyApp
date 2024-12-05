@@ -3,7 +3,6 @@ import handleLogin from "./HandleLogin";
 import GuestLoginButton from "./GuestLogin.js";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext"; // Importera useUser
-// import "../../styles/Register.css";
 import "../../styles/Loging.css";
 
 const Login = () => {
